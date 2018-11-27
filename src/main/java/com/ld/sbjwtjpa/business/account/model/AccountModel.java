@@ -17,7 +17,6 @@ import java.sql.Timestamp;
  * @author ld
  * @name
  * @table
- * @remarks
  */
 @ApiModel(value = "AccountModel", description = "账户表")
 @Entity(name = "account_table")
@@ -30,17 +29,17 @@ public class AccountModel implements Serializable {
     @GeneratedValue(generator = "system-uuid")
     private String uuid;
 
-    @ApiModelProperty(value = "账户", name = "account")
+    @ApiModelProperty(value = "", name = "account", dataType = "String", required = true, allowableValues = "账号")
     @NotBlank(message = "账户不能为空")
     @Size(max = 200, message = "账户最大长度为200位")
-    @Pattern(regexp = "/^[A-Za-z0-9]+$/", message = "账户由大小写字母或数字组成")
+    @Pattern(regexp = "^[A-Za-z0-9]+$", message = "账户由大小写字母或数字组成")
     @Column(name = "account", nullable = false)
     private String account;
 
-    @ApiModelProperty(value = "密码", name = "password")
+    @ApiModelProperty(value = "密码", name = "password", dataType = "String", required = true, allowableValues = "密码")
     @NotBlank(message = "密码不能为空")
     @Size(max = 200, message = "密码最大长度为200位")
-    @Pattern(regexp = "/^[A-Za-z0-9]+$/", message = "密码由大小写字母或数字组成")
+    @Pattern(regexp = "^[A-Za-z0-9]+$", message = "密码由大小写字母或数字组成")
     @Column(name = "password", nullable = false)
     private String password;
 
@@ -94,14 +93,14 @@ public class AccountModel implements Serializable {
         super();
     }
 
-    public AccountModel(String uuid, String account, @NotBlank(message = "账户密码不能为空") @Size(max = 200, message = "账户密码最大长度为200位") @Pattern(regexp = "/^[A-Za-z0-9]+$/", message = "密码由大小写字母或数字组成") String password, Long version) {
+    public AccountModel(String uuid, String account, @NotBlank(message = "账户密码不能为空") @Size(max = 200, message = "账户密码最大长度为200位") @Pattern(regexp = "^[A-Za-z0-9]+$", message = "密码由大小写字母或数字组成") String password, Long version) {
         this.uuid = uuid;
         this.account = account;
         this.password = password;
         this.version = version;
     }
 
-    public AccountModel(String uuid, @NotBlank(message = "账户不能为空") @Size(max = 200, message = "账户最大长度为200位") @Pattern(regexp = "/^[A-Za-z0-9]+$/", message = "账户由大小写字母或数字组成") String account, @NotBlank(message = "密码不能为空") @Size(max = 200, message = "密码最大长度为200位") @Pattern(regexp = "/^[A-Za-z0-9]+$/", message = "密码由大小写字母或数字组成") String password, Timestamp systimes, Long version) {
+    public AccountModel(String uuid, @NotBlank(message = "账户不能为空") @Size(max = 200, message = "账户最大长度为200位") @Pattern(regexp = "^[A-Za-z0-9]+$", message = "账户由大小写字母或数字组成") String account, @NotBlank(message = "密码不能为空") @Size(max = 200, message = "密码最大长度为200位") @Pattern(regexp = "^[A-Za-z0-9]+$", message = "密码由大小写字母或数字组成") String password, Timestamp systimes, Long version) {
         this.uuid = uuid;
         this.account = account;
         this.password = password;

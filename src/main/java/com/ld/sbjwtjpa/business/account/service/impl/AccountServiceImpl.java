@@ -16,6 +16,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -53,6 +54,7 @@ public class AccountServiceImpl implements AccountService {
         List<AccountModel> list = jpa.findByAccount(model.getAccount());
         if (list.size() > 0)
             return new ResponseResult<>(false, "账户名称冲突");
+        model.setSystimes(new Timestamp(System.currentTimeMillis()));
         jpa.save(model);
         return new ResponseResult<>(true, "成功");
     }

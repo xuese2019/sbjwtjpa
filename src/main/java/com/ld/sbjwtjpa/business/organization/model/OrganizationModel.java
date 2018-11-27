@@ -31,13 +31,13 @@ public class OrganizationModel implements Serializable {
     private String uuid;
 
     //    组织机构名称
-    @ApiModelProperty(value = "组织机构名称", name = "orgName")
+    @ApiModelProperty(value = "组织机构名称", name = "orgName", dataType = "String", required = true, allowableValues = "组织机构名称")
     @NotBlank(message = "组织机构名称不能为空")
     @Size(max = 200, message = "组织机构名称最大长度为200位")
     @Column(name = "org_name", nullable = false)
     private String orgName;
     //    组织机构父级
-    @ApiModelProperty(value = "组织机构父级", name = "orgParent")
+    @ApiModelProperty(value = "组织机构父级", name = "orgParent", dataType = "String", required = true, allowableValues = "组织机构父级,第一级用0标识")
     @NotBlank(message = "组织机构父级不能为空")
     @Size(max = 200, message = "组织机构父级最大长度为200位")
     @Column(name = "org_parent", nullable = false)
