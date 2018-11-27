@@ -1,0 +1,75 @@
+#tocmat设置
+server:
+  port: 9002
+  tomcat:
+    uri-encoding: UTF-8
+  #    允许的http请求
+  port-header: HEAD,PUT,DELETE,OPTIONS,TRACE,COPY,SEARCH,PROPFIND
+spring:
+  #限制上传文件大小，springboot默认限制为2M
+  http:
+    multipart:
+      enabled: true
+      #      单个文件大小
+      max-file-size: 100MB
+      #      单次请求文件大小，为了应对多个文件同时上传的情况
+      max-request-size: 100MB
+  # class文件编码
+  mandatory-file-encoding: UTF-8
+  #    datasource
+  #log4j jdbc
+  datasource:
+    url: jdbc:mysql://192.168.1.222/sbjwtjpa?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+
+  #     控制台彩色输出
+  output:
+    ansi:
+      enabled: ALWAYS
+  #      应对OPTIONS请求，权限判断会出现此请求
+  mvc:
+    dispatch-options-request: true
+    #    默认静态路径
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:/static/,classpath:/error/,file:${upLoad.path}
+
+  #  jpa
+  jpa:
+    hibernate:
+      #    是否自动创建跟新表
+      ddl-auto: update
+      #      是否打印sql
+      #     show-sql: true
+      #配置jpa默认的表编码  字段排序编码
+      properties:
+        dialect: com.ld.sbjwtjpa.sys.jpa.MySQL5InnoDBDialectUtf8mb4
+#默认分页条数
+page:
+  pageSize: 15
+
+#banner 启动动画文件
+# 启动动画文件编码
+banner:
+  charset: UTF-8
+# 启动动画文件地址
+#  location: classpath:banner.txt
+
+#配置日志
+logging:
+  #  默认日志格式 10M自动分割 最多存在7个文件
+  file: sbjwtjpa.log
+  level:
+    com.ld.sbjwtjpa: debug
+
+#上传/导入文件地址
+upLoad:
+  path: D://zlUpload/
+#sql备份地址
+databaseSavePath: D://
+#模版地址
+file:
+  model:
+    path: D://
