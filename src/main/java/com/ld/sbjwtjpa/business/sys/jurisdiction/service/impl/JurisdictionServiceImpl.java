@@ -95,6 +95,15 @@ public class JurisdictionServiceImpl implements JurisdictionService {
     }
 
     @Override
+    public ResponseResult<List<JurisdictionModel>> findAll(List<String> list) {
+        List<JurisdictionModel> list1 = jpa.findByUuidIn(list);
+        if (list1.size() > 0)
+            return new ResponseResult<>(true, "成功", list1);
+        else
+            return new ResponseResult<>(false, "未查询到数据");
+    }
+
+    @Override
     public ResponseResult<List<JurisdictionModel>> findRecursionAll() {
         List<Sort.Order> orders = new ArrayList<>();
         orders.add(new Sort.Order(Sort.Direction.DESC, "jurName"));//排序信息

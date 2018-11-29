@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author ld
@@ -15,4 +16,6 @@ import javax.annotation.Resource;
 @Resource
 public interface JurisdictionJpa extends JpaSpecificationExecutor<JurisdictionModel>,
         JpaRepository<JurisdictionModel, String> {
+
+    List<JurisdictionModel> findByUuidIn(List<String> list);
 }
