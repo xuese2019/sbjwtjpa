@@ -1,0 +1,76 @@
+package com.ld.sbjwtjpa.business.sys.rolesSubsidiary.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Table;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import java.io.Serializable;
+
+@ApiModel(value = "RolesSubsidiaryModel", description = "角色与权限的对应关系")
+@Entity(name = "roles_subsidiary_table")
+@Table(comment = "角色与权限的对应关系", appliesTo = "roles_subsidiary_table")
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class RolesSubsidiaryModel implements Serializable {
+
+    @Id
+    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
+    @GeneratedValue(generator = "system-uuid")
+    private String uuid;
+
+    @ApiModelProperty(name = "orgId", dataType = "String", required = true, allowableValues = "职位主键")
+    @Column(name = "org_id", nullable = false)
+    private String orgId;
+
+    @ApiModelProperty(name = "jurId", dataType = "String", required = true, allowableValues = "权限主键")
+    @Column(name = "jur_id", nullable = false)
+    private String jurId;
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public String getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(String orgId) {
+        this.orgId = orgId;
+    }
+
+    public String getJurId() {
+        return jurId;
+    }
+
+    public void setJurId(String jurId) {
+        this.jurId = jurId;
+    }
+
+    public RolesSubsidiaryModel() {
+        super();
+    }
+
+    public RolesSubsidiaryModel(String uuid, String orgId, String jurId) {
+        this.uuid = uuid;
+        this.orgId = orgId;
+        this.jurId = jurId;
+    }
+
+    @Override
+    public String toString() {
+        return "RolesSubsidiaryModel{" +
+                "uuid='" + uuid + '\'' +
+                ", orgId='" + orgId + '\'' +
+                ", jurId='" + jurId + '\'' +
+                '}';
+    }
+}
