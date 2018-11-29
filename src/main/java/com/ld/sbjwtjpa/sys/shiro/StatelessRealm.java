@@ -112,7 +112,7 @@ public class StatelessRealm extends AuthorizingRealm {
         ResponseResult<AccountModel> result = accountService.findOne(model);
         if (!result.isSuccess())
             throw new UnknownAccountException("当前用户已不存在!");
-        return new SimpleAuthenticationInfo(result.getData(), token, getName());
+        return new SimpleAuthenticationInfo(result.getData(), result.getData().getPassword(), getName());
     }
 
 }
