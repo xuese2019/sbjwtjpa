@@ -41,7 +41,7 @@ public class RolesSubsidiaryController {
     }
 
     @ApiOperation(value = "根据条件查询")
-    @RequestMapping(value = "/roles", method = RequestMethod.GET)
+    @RequestMapping(value = "/roles/findAll", method = RequestMethod.POST)
     public ResponseResult<List<RolesSubsidiaryModel>> findAll(@RequestBody RolesSubsidiaryModel model) {
         return service.findAll(model);
     }
