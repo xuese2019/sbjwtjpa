@@ -19,10 +19,10 @@ spring:
   #    datasource
   #log4j jdbc
   datasource:
-    url: jdbc:mysql://192.168.1.222/sbjwtjpa?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    url: jdbc:log4jdbc:mysql://192.168.1.222/sbjwtjpa?useUnicode=true&characterEncoding=utf-8&useSSL=false
     username: root
     password: root
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: net.sf.log4jdbc.DriverSpy
 
   #     控制台彩色输出
   output:
@@ -41,11 +41,16 @@ spring:
     hibernate:
       #    是否自动创建跟新表
       ddl-auto: update
-      #      是否打印sql
-      #     show-sql: true
       #配置jpa默认的表编码  字段排序编码
       properties:
         dialect: com.ld.sbjwtjpa.sys.jpa.MySQL5InnoDBDialectUtf8mb4
+    #      是否打印sql
+#    show-sql: true
+#    是否格式化sql
+    format-sql: true
+  #    是否启用aop
+  aop:
+    auto: true
 #默认分页条数
 page:
   pageSize: 15

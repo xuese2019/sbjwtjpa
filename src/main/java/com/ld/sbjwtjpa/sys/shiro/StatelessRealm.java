@@ -57,7 +57,7 @@ public class StatelessRealm extends AuthorizingRealm {
         model.setUuid(token.getUuid());
         ResponseResult<AccountModel> result = accountService.findOne(model);
         if (result.isSuccess()) {
-            info.addRole("user");
+            info.addRole("admin");
             RolesSubsidiaryModel model1 = new RolesSubsidiaryModel();
             model1.setOrgId(result.getData().getOrgId());
             ResponseResult<List<RolesSubsidiaryModel>> result2 = rolesSubsidiaryService.findAll(model1);

@@ -4,7 +4,6 @@ import com.ld.sbjwtjpa.business.sys.organization.model.OrganizationModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -13,7 +12,6 @@ import java.util.List;
  * @table
  * @remarks
  */
-@Resource
 public interface OrganizationJpa extends JpaSpecificationExecutor<OrganizationModel>,
         JpaRepository<OrganizationModel, String> {
 
