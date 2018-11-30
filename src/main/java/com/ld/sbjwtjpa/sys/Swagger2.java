@@ -25,10 +25,14 @@ public class Swagger2 {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("springboot利用swagger构建api文档")
-                .description("http://localhost:9002/swagger-ui.html")
-                .termsOfServiceUrl("http://localhost:9002/swagger-ui.html")
+//                标题
+                .title("api文档")
+//                描述
+                .description("在线api说明文档")
+//                版本号
                 .version("1.0")
+//                服务条款
+                .termsOfServiceUrl("服务条款")
                 .build();
     }
 }
