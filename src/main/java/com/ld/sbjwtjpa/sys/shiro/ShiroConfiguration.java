@@ -6,6 +6,7 @@ import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.DefaultSessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
@@ -19,6 +20,17 @@ import java.util.Map;
 
 @Configuration
 public class ShiroConfiguration {
+    // 下面两个方法对 注解权限起作用有很大的关系，请把这两个方法，放在配置的最上面
+    @Bean(name = "lifecycleBeanPostProcessor")
+    public LifecycleBeanPostProcessor getLifecycleBeanPostProcessor() {
+        return new LifecycleBeanPostProcessor();
+    }
+    @Bean
+    public DefaultAdvisorAutoProxyCreator getDefaultAdvisorAutoProxyCreator() {
+        DefaultAdvisorAutoProxyCreator autoProxyCreator = new DefaultAdvisorAutoProxyCreator();
+        autoProxyCreator.setProxyTargetClass(true);
+        return autoProxyCreator;
+    }
 
     //    Realm
     @Bean
@@ -28,20 +40,11 @@ public class ShiroConfiguration {
 
     @Bean
     public StatelessDefaultSubjectFactory statelessDefaultSubjectFactory() {
-        return new StatelessDefaultSubjectFactory();
+        StatelessDefaultSubjectFactory statelessDefaultSubjectFactory = new StatelessDefaultSubjectFactory();
+        return statelessDefaultSubjectFactory;
     }
 
-    @Bean
-    public static LifecycleBeanPostProcessor getLifecycleBeanPostProcessor() {
-        return new LifecycleBeanPostProcessor();
-    }
-
-    @Bean
-    public static DefaultAdvisorAutoProxyCreator getDefaultAdvisorAutoProxyCreator() {
-        return new DefaultAdvisorAutoProxyCreator();
-    }
-
-    @Bean
+    @Bean(name = "sessionManager")
     public DefaultSessionManager defaultSessionManager() {
         DefaultSessionManager manager = new DefaultSessionManager();
         manager.setSessionValidationSchedulerEnabled(false);
@@ -49,6 +52,14 @@ public class ShiroConfiguration {
     }
 
     @Bean
+    public AuthorizationAttributeSourceAdvisor getAuthorizationAttributeSourceAdvisor(
+            DefaultWebSecurityManager securityManager) {
+        AuthorizationAttributeSourceAdvisor advisor = new AuthorizationAttributeSourceAdvisor();
+        advisor.setSecurityManager(securityManager);
+        return advisor;
+    }
+
+    @Bean(name = "securityManager")
     public DefaultWebSecurityManager defaultWebSecurityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
 
@@ -70,10 +81,8 @@ public class ShiroConfiguration {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
 //        必须注入securityManager
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-
-//        wei shou quan
+//        权限不足
 //        shiroFilterFactoryBean.setUnauthorizedUrl("/403");
-
         Map<String, Filter> filters = new HashMap<>();
         filters.put("statelessAuthcFilter", new StatelessAuthcFilter());
         shiroFilterFactoryBean.setFilters(filters);

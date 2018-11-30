@@ -50,7 +50,7 @@ public class StatelessRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection arg0) {
-        AccountModel token = (AccountModel) arg0;
+        AccountModel token = (AccountModel) arg0.getPrimaryPrincipal();
         // TODO Auto-generated method stub
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         AccountModel model = new AccountModel();

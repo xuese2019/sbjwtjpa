@@ -1,9 +1,9 @@
 package com.ld.sbjwtjpa;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ld.sbjwtjpa.utils.ResponseResult;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.AuthorizationException;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.text.ParseException;
@@ -177,127 +177,31 @@ public class GlobalExceptionHandler {
     /**
      * 权限不足
      *
-     * @param request
      * @param exception
      * @return
      * @throws Exception
      */
     @ExceptionHandler(value = AuthorizationException.class)
-    public void authorizationException(HttpServletRequest request,
-                                       HttpServletResponse response,
-                                       Exception exception) throws Exception {
+    public ResponseResult<String> authorizationException(Exception exception) throws Exception {
         //        exception.printStackTrace();
         log.debug("ERROR::::：" + exception.getLocalizedMessage() + "::::::" + new Date());
         log.debug("ERROR::::：" + exception.getCause() + "::::::" + new Date());
         log.debug("ERROR::::：" + Arrays.toString(exception.getSuppressed()) + "::::::" + new Date());
         log.debug("ERROR::::：" + exception.getMessage() + "::::::" + new Date());
         log.debug("ERROR::::：" + Arrays.toString(exception.getStackTrace()) + "::::::" + new Date());
-//        return new ModelAndView("/403");
-        String requestType = request.getHeader("X-Requested-With");
-        if ("XMLHttpRequest".equals(requestType)) {
-
-            ResponseResult result = new ResponseResult();
-            result.setSuccess(false);
-            result.setMessage(new String("权限不足".getBytes("UTF-8"), "UTF-8"));
-
-            ObjectMapper objectMapper = new ObjectMapper();
-//            JsonGenerator jsonGenerator = objectMapper.getFactory()
-//                    .createGenerator(System.out, JsonEncoding.UTF8);
-            //对象转JSON
-            String json = objectMapper.writeValueAsString(result);//返回字符串，输出
-            response.setCharacterEncoding("UTF-8");
-            response.setHeader("content-type", "text/html;charset=UTF-8");
-            response.getWriter().append(json);
-        } else {
-//            非ajax请求
-            response.sendRedirect("/403");
-        }
+        return new ResponseResult<>(false, new String("权限不足".getBytes(), StandardCharsets.UTF_8));
     }
 
-    /**
-     * 权限不足
-     *
-     * @param request
-     * @param exception
-     * @return
-     * @throws Exception
-     */
-//    @ExceptionHandler(value = UnauthorizedException.class)
-//    public void UnauthorizedException(HttpServletRequest request,
-//                                      Exception exception,
-//                                      HttpServletResponse response) throws Exception {
-////        exception.printStackTrace();
-//        log.debug("ERROR::::：" + exception.getLocalizedMessage() + "::::::" + new Date());
-//        log.debug("ERROR::::：" + exception.getCause() + "::::::" + new Date());
-//        log.debug("ERROR::::：" + Arrays.toString(exception.getSuppressed()) + "::::::" + new Date());
-//        log.debug("ERROR::::：" + exception.getMessage() + "::::::" + new Date());
-//        log.debug("ERROR::::：" + Arrays.toString(exception.getStackTrace()) + "::::::" + new Date());
-////        return new ModelAndView("/403");
-//        String requestType = request.getHeader("X-Requested-With");
-//        if ("XMLHttpRequest".equals(requestType)) {
-//
-//            if (request.getHeader("L") != null) {
-////                跳转页面的ajax
-//                response.sendRedirect("/403");
-//            }
-//
-//            ResponseResult result = new ResponseResult();
-//            result.setSuccess(false);
-//            result.setMessage(new String("权限不足!".getBytes("UTF-8"), "UTF-8"));
-//
-//            ObjectMapper objectMapper = new ObjectMapper();
-////            JsonGenerator jsonGenerator = objectMapper.getFactory()
-////                    .createGenerator(System.out, JsonEncoding.UTF8);
-//            //对象转JSON
-//            String json = objectMapper.writeValueAsString(result);//返回字符串，输出
-//            response.setCharacterEncoding("UTF-8");
-//            response.setHeader("content-type", "text/html;charset=UTF-8");
-//            response.getWriter().append(json);
-//        } else {
-////            非ajax请求
-//            response.sendRedirect("/403");
-//        }
-//    }
-
-    /**
-     * 未登录
-     *
-     * @param request
-     * @param exception
-     * @return
-     * @throws Exception
-     */
-//    @ExceptionHandler(value = UnknownAccountException.class)
-//    public void UnknownAccountException(HttpServletRequest request,
-//                                        Exception exception,
-//                                        HttpServletResponse response) throws Exception {
-////        exception.printStackTrace();
-//        log.debug("ERROR::::：" + exception.getLocalizedMessage() + "::::::" + new Date());
-//        log.debug("ERROR::::：" + exception.getCause() + "::::::" + new Date());
-//        log.debug("ERROR::::：" + Arrays.toString(exception.getSuppressed()) + "::::::" + new Date());
-//        log.debug("ERROR::::：" + exception.getMessage() + "::::::" + new Date());
-//        log.debug("ERROR::::：" + Arrays.toString(exception.getStackTrace()) + "::::::" + new Date());
-////        return new ModelAndView("/403");
-//        String requestType = request.getHeader("X-Requested-With");
-//        if ("XMLHttpRequest".equals(requestType)) {
-//            ResponseResult result = new ResponseResult();
-//            result.setSuccess(false);
-//            result.setMessage(new String("登录超时,请从新登录".getBytes("UTF-8"), "UTF-8"));
-//
-//            ObjectMapper objectMapper = new ObjectMapper();
-////            JsonGenerator jsonGenerator = objectMapper.getFactory()
-////                    .createGenerator(System.out, JsonEncoding.UTF8);
-//            //对象转JSON
-//            String json = objectMapper.writeValueAsString(result);//返回字符串，输出
-//            response.setCharacterEncoding("UTF-8");
-//            response.setHeader("content-type", "text/html;charset=UTF-8");
-//            response.getWriter().append(json);
-//        } else {
-////            非ajax请求
-//            response.sendRedirect("/index");
-//        }
-//    }
-
+    @ExceptionHandler(value = UnauthorizedException.class)
+    public ResponseResult<String> unauthorizedException(Exception exception) throws Exception {
+        //        exception.printStackTrace();
+        log.debug("ERROR::::：" + exception.getLocalizedMessage() + "::::::" + new Date());
+        log.debug("ERROR::::：" + exception.getCause() + "::::::" + new Date());
+        log.debug("ERROR::::：" + Arrays.toString(exception.getSuppressed()) + "::::::" + new Date());
+        log.debug("ERROR::::：" + exception.getMessage() + "::::::" + new Date());
+        log.debug("ERROR::::：" + Arrays.toString(exception.getStackTrace()) + "::::::" + new Date());
+        return new ResponseResult<>(false, new String("权限不足".getBytes(), StandardCharsets.UTF_8));
+    }
 
     /**
      * 类型强制转换错误
