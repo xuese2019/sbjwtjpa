@@ -19,7 +19,7 @@ spring:
   #    datasource
   #log4j jdbc
   datasource:
-    url: jdbc:log4jdbc:mysql://192.168.1.222/sbjwtjpa?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    url: jdbc:log4jdbc:mysql://localhost/sbjwtjpa?useUnicode=true&characterEncoding=utf-8&useSSL=false
     username: root
     password: root
     driver-class-name: net.sf.log4jdbc.DriverSpy
