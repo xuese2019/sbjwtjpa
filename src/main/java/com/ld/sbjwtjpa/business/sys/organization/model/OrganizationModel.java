@@ -56,4 +56,15 @@ public class OrganizationModel implements Serializable {
 
     @Version
     private Long version;
+
+    @Override
+    public String toString() {
+        return "OrganizationModel{" +
+                "uuid='" + uuid + '\'' +
+                ", orgName='" + orgName + '\'' +
+                ", orgParent='" + orgParent + '\'' +
+                ", list=" + list +
+                ", version=" + version +
+                '}';
+    }
 }
