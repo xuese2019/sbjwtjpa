@@ -3,7 +3,10 @@ package com.ld.sbjwtjpa.business.sys.account.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Table;
 
@@ -23,6 +26,9 @@ import java.sql.Timestamp;
 @Entity(name = "account_table")
 @Table(comment = "账户表", appliesTo = "account_table")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AccountModel implements Serializable {
 
@@ -54,15 +60,4 @@ public class AccountModel implements Serializable {
     @Version
     private Long version;
 
-    @Override
-    public String toString() {
-        return "AccountModel{" +
-                "uuid='" + uuid + '\'' +
-                ", account='" + account + '\'' +
-                ", password='" + password + '\'' +
-                ", systimes=" + systimes +
-                ", orgId='" + orgId + '\'' +
-                ", version=" + version +
-                '}';
-    }
 }

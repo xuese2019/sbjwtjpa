@@ -3,7 +3,10 @@ package com.ld.sbjwtjpa.business.sys.jurisdiction.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Table;
 
@@ -24,6 +27,9 @@ import java.util.List;
 @Entity(name = "jurisdiction_table")
 @Table(comment = "权限表", appliesTo = "jurisdiction_table")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JurisdictionModel implements Serializable {
 

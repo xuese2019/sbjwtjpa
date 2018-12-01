@@ -1,7 +1,10 @@
 package com.ld.sbjwtjpa.business.sys.admin.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Table;
 
@@ -20,6 +23,9 @@ import java.io.Serializable;
 @Entity(name = "admin_table")
 @Table(comment = "管理员表", appliesTo = "admin_table")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AdminModel implements Serializable {
 

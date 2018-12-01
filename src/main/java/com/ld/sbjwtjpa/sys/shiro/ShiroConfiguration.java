@@ -20,7 +20,9 @@ import java.util.Map;
 
 @Configuration
 public class ShiroConfiguration {
-    // 下面两个方法对 注解权限起作用有很大的关系，请把这两个方法，放在配置的最上面
+    /**
+     * 下面两个方法对 注解权限起作用有很大的关系，请把这两个方法，放在配置的最上面
+     */
     @Bean(name = "lifecycleBeanPostProcessor")
     public LifecycleBeanPostProcessor getLifecycleBeanPostProcessor() {
         return new LifecycleBeanPostProcessor();
@@ -33,7 +35,6 @@ public class ShiroConfiguration {
         return autoProxyCreator;
     }
 
-    //    Realm
     @Bean
     public StatelessRealm statelessRealm() {
         return new StatelessRealm();
@@ -83,15 +84,14 @@ public class ShiroConfiguration {
 //        必须注入securityManager
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 //        权限不足
-//        shiroFilterFactoryBean.setUnauthorizedUrl("/403");
-        Map<String, Filter> filters = new HashMap<>();
+        Map<String, Filter> filters = new HashMap<>(16);
         filters.put("statelessAuthcFilter", new StatelessAuthcFilter());
         shiroFilterFactoryBean.setFilters(filters);
 //拦截器
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
 //        应为是无状态的，所以此处的白名单不起作用
         filterChainDefinitionMap.put("/", "anon");
-        filterChainDefinitionMap.put("/index", "anon");
+        filterChainDefinitionMap.put("/api.html", "anon");
         filterChainDefinitionMap.put("/favicon.ico", "anon");
         filterChainDefinitionMap.put("/swagger**", "anon");
         filterChainDefinitionMap.put("/swagger**/**", "anon");

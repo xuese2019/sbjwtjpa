@@ -3,7 +3,10 @@ package com.ld.sbjwtjpa.business.sys.organization.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Table;
 
@@ -21,9 +24,12 @@ import java.util.List;
  * @remarks
  */
 @ApiModel(value = "OrganizationModel", description = "组织机构表")
-@Data
 @Entity(name = "organization_table")
 @Table(comment = "组织机构表", appliesTo = "organization_table")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OrganizationModel implements Serializable {
 
