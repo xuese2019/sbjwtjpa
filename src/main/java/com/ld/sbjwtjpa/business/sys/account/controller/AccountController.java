@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @Api(value = "账号管理接口", description = "账号管理接口")
 @RestController
@@ -72,5 +73,12 @@ public class AccountController {
             model.setAccount(uuid);
             return service.findOne(model);
         }
+    }
+
+    @ApiOperation(value = "根据条件获取实体集合", notes = "根据条件获取实体集合")
+    @RequiresRoles(value = {"admin"})
+    @RequestMapping(value = "/findAll", method = RequestMethod.POST)
+    public ResponseResult<List<AccountModel>> findAll(@RequestBody AccountModel model) {
+        return service.findAll(model);
     }
 }

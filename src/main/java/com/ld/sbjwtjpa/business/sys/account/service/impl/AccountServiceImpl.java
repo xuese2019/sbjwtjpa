@@ -42,6 +42,10 @@ public class AccountServiceImpl implements AccountService {
                         Predicate p1 = cb.like(root.get("account").as(String.class), "%" + model.getAccount() + "%");
                         predicates.add(cb.and(p1));
                     }
+                    if (model.getOrgId() != null && !model.getOrgId().isEmpty()) {
+                        Predicate p1 = cb.like(root.get("orgId").as(String.class), model.getOrgId());
+                        predicates.add(cb.and(p1));
+                    }
                 }
                 return cb.and(predicates.toArray(new Predicate[predicates.size()]));
             }
@@ -79,12 +83,26 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public ResponseResult<AccountModel> findOne(AccountModel model) {
+        model.setOrgId(null);
         Specification<AccountModel> queryTj = queryTj(model);
         Optional<AccountModel> one = jpa.findOne(queryTj);
         if (one.orElse(null) != null)
             return new ResponseResult<>(true, "成功", one.get());
         else
             return new ResponseResult<>(false, "未查询到记录");
+    }
+
+    @Override
+    public ResponseResult<List<AccountModel>> findAll(AccountModel model) {
+        List<Sort.Order> orders = new ArrayList<>();
+        orders.add(new Sort.Order(Sort.Direction.DESC, "systimes"));//排序信息
+        orders.add(new Sort.Order(Sort.Direction.ASC, "account"));//排序信息
+        Specification<AccountModel> spec = queryTj(model);
+        List<AccountModel> page = jpa.findAll(spec, Sort.by(orders));
+        if (page.size() > 0)
+            return new ResponseResult<>(true, "成功", page);
+        else
+            return new ResponseResult<>(false, "未查询到数据");
     }
 
     @Override
