@@ -39,6 +39,7 @@ public class LoginController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseResult<String> login(@Valid @RequestBody AccountModel model,
                                         BindingResult result) {
+        model.setOrgId("0");
 //        验证输入的信息
         if (result.hasErrors())
             return new ResponseResult<>(false,
