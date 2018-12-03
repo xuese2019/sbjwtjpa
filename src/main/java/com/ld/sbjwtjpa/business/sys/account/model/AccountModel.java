@@ -54,6 +54,7 @@ public class AccountModel implements Serializable {
     @Column(name = "systimes", nullable = false)
     private Timestamp systimes;
 
+    @ApiModelProperty(value = "组织机构主键", name = "orgId", dataType = "String", allowableValues = "组织机构主键")
     @Column(name = "org_id")
     private String orgId;
 
