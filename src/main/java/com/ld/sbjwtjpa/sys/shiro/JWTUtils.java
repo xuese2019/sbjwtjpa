@@ -59,4 +59,17 @@ public class JWTUtils {
         String sub = map.get("sub").asString();
         return sub;
     }
+
+    public static String getAccId(HttpServletRequest request) {
+        String token = request.getHeader("LTokenD");
+        if (token == null || token.isEmpty())
+            return null;
+        Map<String, Claim> map = JWTUtils.verifToken(token);
+        if (map == null || map.size() <= 0)
+            return null;
+        String uuid = map.get("subid").asString();
+        if (uuid == null || uuid.isEmpty())
+            return null;
+        return uuid;
+    }
 }

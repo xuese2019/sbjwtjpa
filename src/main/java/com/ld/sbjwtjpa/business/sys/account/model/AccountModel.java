@@ -57,6 +57,24 @@ public class AccountModel implements Serializable {
     @Column(name = "org_id")
     private String orgId;
 
+    @ApiModelProperty(value = "邮箱", name = "emails", dataType = "String", allowableValues = "邮箱")
+    @Size(max = 200, message = "邮箱最大长度为200位")
+    @Column(name = "emails")
+    private String emails;
+
+    @ApiModelProperty(value = "邮箱授权码", name = "emailsAuthorizationCode", dataType = "String", allowableValues = "邮箱授权码")
+    @Size(max = 200, message = "邮箱授权码最大长度为200位")
+    @Column(name = "emails_authorization_code")
+    private String emailsAuthorizationCode;
+
+    @ApiModelProperty(value = "邮箱smt地址", name = "emailsHost", dataType = "String", allowableValues = "邮箱smt地址")
+    @Column(name = "emails_host")
+    private String emailsHost;
+
+    @ApiModelProperty(value = "邮箱imap地址", name = "emailsImap", dataType = "String", allowableValues = "邮箱imap地址")
+    @Column(name = "emails_imap")
+    private String emailsImap;
+
     @Version
     private Long version;
 

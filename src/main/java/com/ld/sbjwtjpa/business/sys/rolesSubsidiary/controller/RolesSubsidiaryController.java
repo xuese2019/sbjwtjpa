@@ -7,6 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ public class RolesSubsidiaryController {
     private RolesSubsidiaryService service;
 
     @ApiOperation(value = "赋予权限")
+    @RequiresRoles(value = {"admin"})
     @RequestMapping(value = "/roles", method = RequestMethod.POST)
     public ResponseResult<RolesSubsidiaryModel> save(@Valid @RequestBody RolesSubsidiaryModel model,
                                                      BindingResult result) {
@@ -35,12 +37,14 @@ public class RolesSubsidiaryController {
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "path", name = "uuid", value = "需要删除的id", required = true, dataType = "String"),
     })
+    @RequiresRoles(value = {"admin"})
     @RequestMapping(value = "/roles/{uuid}", method = RequestMethod.DELETE)
     public ResponseResult<RolesSubsidiaryModel> delete(@PathVariable("uuid") String uuid) {
         return service.delete(uuid);
     }
 
     @ApiOperation(value = "根据条件查询")
+    @RequiresRoles(value = {"admin"})
     @RequestMapping(value = "/roles/findAll", method = RequestMethod.POST)
     public ResponseResult<List<RolesSubsidiaryModel>> findAll(@RequestBody RolesSubsidiaryModel model) {
         return service.findAll(model);

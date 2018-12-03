@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.mail.AuthenticationFailedException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 import java.io.FileNotFoundException;
@@ -52,6 +53,28 @@ public class GlobalExceptionHandler {
         ResponseResult<String> result = new ResponseResult<>();
         result.setSuccess(false);
         result.setMessage(exception.getMessage());
+        return result;
+    }
+
+    /**
+     * 邮箱错误
+     *
+     * @param request
+     * @param exception
+     * @return
+     */
+    @ExceptionHandler(value = AuthenticationFailedException.class)
+    public ResponseResult<String> authenticationFailedException(HttpServletRequest request,
+                                                                Exception exception) {
+        exception.printStackTrace();
+        log.debug("ERROR::::：" + exception.getLocalizedMessage() + "::::::" + new Date());
+        log.debug("ERROR::::：" + exception.getCause() + "::::::" + new Date());
+        log.debug("ERROR::::：" + Arrays.toString(exception.getSuppressed()) + "::::::" + new Date());
+        log.debug("ERROR::::：" + exception.getMessage() + "::::::" + new Date());
+        log.debug("ERROR::::：" + Arrays.toString(exception.getStackTrace()) + "::::::" + new Date());
+        ResponseResult<String> result = new ResponseResult<>();
+        result.setSuccess(false);
+        result.setMessage("邮箱无法登陆");
         return result;
     }
 

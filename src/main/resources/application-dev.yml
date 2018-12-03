@@ -51,6 +51,24 @@ spring:
   #    是否启用aop
   aop:
     auto: true
+  mail:
+    mail-0:
+      host: smtp.126.com
+      username: 用户名  //发送方的邮箱
+      password: 密码  //对于qq邮箱而言 密码指的就是发送方的授权码
+      protocol: smtp
+    mail-1:
+      host: smtp.qq.com
+      username: 用户名  //发送方的邮箱
+      password: 密码  //对于qq邮箱而言 密码指的就是发送方的授权码
+      protocol: smtp
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#        starttls:
+#          enable: true
+#          required: true
 #默认分页条数
 page:
   pageSize: 15

@@ -6,6 +6,7 @@ import com.ld.sbjwtjpa.utils.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.DigestUtils;
@@ -27,6 +28,7 @@ public class AccountController {
     private AccountService service;
 
     @ApiOperation(value = "新增实体", notes = "后台带有数据验证")
+    @RequiresRoles(value = {"admin"})
     @RequestMapping(value = "/account", method = RequestMethod.POST)
     public ResponseResult<AccountModel> save(@Valid @RequestBody AccountModel model,
                                              BindingResult result) {
@@ -39,12 +41,14 @@ public class AccountController {
 
     @ApiOperation(value = "根据id删除实体")
     @ApiImplicitParam(paramType = "path", name = "uuid", value = "需要删除的id", required = true, dataType = "String")
+    @RequiresRoles(value = {"admin"})
     @RequestMapping(value = "/account/{uuid}", method = RequestMethod.DELETE)
     public ResponseResult<AccountModel> deleteByUuid(@PathVariable("uuid") String uuid) {
         return service.deleteByUuid(uuid);
     }
 
     @ApiOperation(value = "根据id修改实体", notes = "后台带有数据验证")
+    @RequiresRoles(value = {"admin"})
     @RequestMapping(value = "/account", method = RequestMethod.PUT)
     public ResponseResult<AccountModel> updateByUuid(@Valid @RequestBody AccountModel model,
                                                      BindingResult result) {
@@ -55,6 +59,7 @@ public class AccountController {
 
     @ApiOperation(value = "根据id获取实体", notes = "优先利用id查找,id找不到将条件作为account查找")
     @ApiImplicitParam(paramType = "path", name = "uuid", value = "需要获取的id,当id查询无结果时将尝试account查询", required = true, dataType = "String")
+    @RequiresRoles(value = {"admin"})
     @RequestMapping(value = "/account/{uuid}", method = RequestMethod.GET)
     public ResponseResult<AccountModel> findOne(@PathVariable("uuid") String uuid) {
         AccountModel model = new AccountModel();
