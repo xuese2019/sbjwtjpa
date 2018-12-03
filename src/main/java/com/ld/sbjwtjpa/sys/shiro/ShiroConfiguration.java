@@ -92,6 +92,7 @@ public class ShiroConfiguration {
 //        应为是无状态的，所以此处的白名单不起作用
         filterChainDefinitionMap.put("/", "anon");
         filterChainDefinitionMap.put("/api.html", "anon");
+        filterChainDefinitionMap.put("/jquery-3.3.1.min.js", "anon");
         filterChainDefinitionMap.put("/favicon.ico", "anon");
         filterChainDefinitionMap.put("/swagger**", "anon");
         filterChainDefinitionMap.put("/swagger**/**", "anon");
