@@ -55,7 +55,7 @@ public class AccountModel implements Serializable {
     private Timestamp systimes;
 
     @ApiModelProperty(value = "组织机构主键", name = "orgId", dataType = "String", allowableValues = "组织机构主键")
-    @NotBlank(message = "组织机构主键不能为空")
+//    @NotBlank(message = "组织机构主键不能为空")
     @Column(name = "org_id")
     private String orgId;
 
