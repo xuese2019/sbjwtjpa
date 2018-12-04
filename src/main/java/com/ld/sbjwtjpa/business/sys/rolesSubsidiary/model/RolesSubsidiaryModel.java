@@ -14,6 +14,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 /**
@@ -37,20 +38,13 @@ public class RolesSubsidiaryModel implements Serializable {
     private String uuid;
 
     @ApiModelProperty(name = "orgId", dataType = "String", required = true, allowableValues = "职位主键")
+    @NotBlank(message = "组织机构主键不能为空")
     @Column(name = "org_id", nullable = false)
     private String orgId;
 
     @ApiModelProperty(name = "jurId", dataType = "String", required = true, allowableValues = "权限主键")
+    @NotBlank(message = "权限主键不能为空")
     @Column(name = "jur_id", nullable = false)
     private String jurId;
 
-
-    @Override
-    public String toString() {
-        return "RolesSubsidiaryModel{" +
-                "uuid='" + uuid + '\'' +
-                ", orgId='" + orgId + '\'' +
-                ", jurId='" + jurId + '\'' +
-                '}';
-    }
 }
