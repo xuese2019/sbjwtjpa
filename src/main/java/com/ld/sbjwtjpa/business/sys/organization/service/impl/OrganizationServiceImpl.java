@@ -117,7 +117,7 @@ public class OrganizationServiceImpl implements OrganizationService {
      * @return
      */
     private static List<OrganizationModel> buildByRecursive(List<OrganizationModel> treeNodes) {
-        List<OrganizationModel> trees = new ArrayList<OrganizationModel>();
+        List<OrganizationModel> trees = new ArrayList<>();
         for (OrganizationModel treeNode : treeNodes) {
             if ("0".equals(treeNode.getOrgParent())) {
                 trees.add(findChildren(treeNode, treeNodes));
