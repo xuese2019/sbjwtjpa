@@ -77,7 +77,10 @@ public class AccountServiceImpl implements AccountService {
         if (one != null) {
             if (model.getPassword() != null && !model.getPassword().isEmpty())
                 one.setPassword(model.getPassword());
+            if (model.getEmails() != null && !model.getEmails().isEmpty())
+                one.setEmails(model.getEmails());
         }
+        jpa.flush();
         return new ResponseResult<>(true, "成功");
     }
 

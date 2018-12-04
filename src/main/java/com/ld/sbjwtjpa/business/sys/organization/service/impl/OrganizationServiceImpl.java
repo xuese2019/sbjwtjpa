@@ -72,6 +72,7 @@ public class OrganizationServiceImpl implements OrganizationService {
             one.setOrgName(model.getOrgName());
         if (model.getOrgParent() != null && !model.getOrgParent().isEmpty())
             one.setOrgParent(model.getOrgParent());
+        jpa.flush();
         return new ResponseResult<>(true, "成功");
     }
 
