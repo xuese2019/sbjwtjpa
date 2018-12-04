@@ -15,7 +15,7 @@ public class JWTUtils {
     public static final String SECRET = "ldtoken";
 
     //    生成token
-    public static String creaToken(String account, String id) throws Exception {
+    public static String creaToken(String account, String id, String orgid) throws Exception {
         Map<String, Object> map = new HashMap<>();
         map.put("alg", "HS256");
         map.put("typ", "JWT");
@@ -25,6 +25,7 @@ public class JWTUtils {
 //                mian xiang de yong hu
                 .withClaim("sub", account)
                 .withClaim("subid", id)
+                .withClaim("orgid", orgid)
 //                jie shou gai jwt fang
                 .withClaim("aud", "ldtoken")
                 //签发时间
@@ -68,6 +69,19 @@ public class JWTUtils {
         if (map == null || map.size() <= 0)
             return null;
         String uuid = map.get("subid").asString();
+        if (uuid == null || uuid.isEmpty())
+            return null;
+        return uuid;
+    }
+
+    public static String getOrgid(HttpServletRequest request) {
+        String token = request.getHeader("LTokenD");
+        if (token == null || token.isEmpty())
+            return null;
+        Map<String, Claim> map = JWTUtils.verifToken(token);
+        if (map == null || map.size() <= 0)
+            return null;
+        String uuid = map.get("orgid").asString();
         if (uuid == null || uuid.isEmpty())
             return null;
         return uuid;

@@ -49,7 +49,7 @@ public class LoginController {
             String md5Password = DigestUtils.md5DigestAsHex(model.getPassword().getBytes(StandardCharsets.UTF_8));
             if (md5Password.equals(result1.getData().getPassword())) {
                 try {
-                    String s = JWTUtils.creaToken(result1.getData().getAccount(), result1.getData().getUuid());
+                    String s = JWTUtils.creaToken(result1.getData().getAccount(), result1.getData().getUuid(), result1.getData().getOrgId());
                     return new ResponseResult<>(true, result1.getData().getUuid() + "," + result1.getData().getAccount(), s);
                 } catch (Exception e) {
                     e.printStackTrace();
