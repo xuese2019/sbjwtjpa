@@ -66,7 +66,7 @@ public class StatelessRealm extends AuthorizingRealm {
                 result2.getData().forEach(k -> {
                     list.add(k.getJurId());
                 });
-                ResponseResult<List<JurisdictionModel>> result3 = jurisdictionService.findAll(list);
+                ResponseResult<List<JurisdictionModel>> result3 = jurisdictionService.findByUuidIn(list);
                 if (result3.isSuccess()) {
                     result3.getData().forEach(k -> {
                         if (k != null) {

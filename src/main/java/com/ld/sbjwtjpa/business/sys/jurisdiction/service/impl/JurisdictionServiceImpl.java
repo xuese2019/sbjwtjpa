@@ -95,7 +95,7 @@ public class JurisdictionServiceImpl implements JurisdictionService {
     }
 
     @Override
-    public ResponseResult<List<JurisdictionModel>> findAll(List<String> list) {
+    public ResponseResult<List<JurisdictionModel>> findByUuidIn(List<String> list) {
         List<JurisdictionModel> list1 = jpa.findByUuidIn(list);
         if (list1.size() > 0)
             return new ResponseResult<>(true, "成功", list1);

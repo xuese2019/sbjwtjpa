@@ -23,7 +23,7 @@ public interface JurisdictionService {
 
     ResponseResult<List<JurisdictionModel>> findAll(JurisdictionModel model);
 
-    ResponseResult<List<JurisdictionModel>> findAll(List<String> list);
+    ResponseResult<List<JurisdictionModel>> findByUuidIn(List<String> list);
 
     //    递归方式查询所有
     ResponseResult<List<JurisdictionModel>> findRecursionAll();
