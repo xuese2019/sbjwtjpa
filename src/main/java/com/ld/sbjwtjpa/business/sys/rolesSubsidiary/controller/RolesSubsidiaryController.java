@@ -48,15 +48,22 @@ public class RolesSubsidiaryController {
         return service.delete(uuid);
     }
 
-    @ApiOperation(value = "根据条件查询")
-    @RequiresRoles(value = {"admin"})
-    @RequestMapping(value = "/roles/findAll", method = RequestMethod.GET)
-    public ResponseResult<List<RolesSubsidiaryModel>> findAll(HttpServletRequest request) {
+    @ApiOperation(value = "根据条件查询,返回当前账户有哪些权限")
+    @RequestMapping(value = "/roles/findAllByUser", method = RequestMethod.GET)
+    public ResponseResult<List<RolesSubsidiaryModel>> findAllByUser(HttpServletRequest request) {
         String token = JWTUtils.getOrgid(request);
         if (token == null)
             return new ResponseResult<>(false, "logout");
         RolesSubsidiaryModel model1 = new RolesSubsidiaryModel();
         model1.setOrgId(token);
+        return service.findAll(model1);
+    }
+
+    @ApiOperation(value = "根据条件查询,返回指定职位有哪些权限")
+    @RequestMapping(value = "/roles/findAllByOrg", method = RequestMethod.GET)
+    public ResponseResult<List<RolesSubsidiaryModel>> findAllByOrg(String orgid) {
+        RolesSubsidiaryModel model1 = new RolesSubsidiaryModel();
+        model1.setOrgId(orgid);
         return service.findAll(model1);
     }
 }
