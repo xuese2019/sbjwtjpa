@@ -83,9 +83,11 @@ banner:
 #配置日志
 logging:
   #  默认日志格式 10M自动分割 最多存在7个文件
-  file: sbjwtjpa.log
+#  file: sbjwtjpa.log
   level:
-    com.ld.sbjwtjpa: debug
+    com.ld.sbjwtjpa: info
+#    自带的日志组属性
+    org.hibernate.SQL: debug
 
 #上传/导入文件地址
 upLoad:

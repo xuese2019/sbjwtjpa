@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Table;
+import org.springframework.boot.jackson.JsonComponent;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -26,6 +27,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@JsonComponent
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AdminModel implements Serializable {
 
@@ -45,13 +47,4 @@ public class AdminModel implements Serializable {
     @Version
     private Long version;
 
-    @Override
-    public String toString() {
-        return "AdminModel{" +
-                "uuid='" + uuid + '\'' +
-                ", account='" + account + '\'' +
-                ", password='" + password + '\'' +
-                ", version=" + version +
-                '}';
-    }
 }

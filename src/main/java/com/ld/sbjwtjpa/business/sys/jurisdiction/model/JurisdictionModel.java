@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Table;
+import org.springframework.boot.jackson.JsonComponent;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -30,6 +31,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@JsonComponent
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JurisdictionModel implements Serializable {
 
@@ -74,16 +76,4 @@ public class JurisdictionModel implements Serializable {
     @Transient
     private List<JurisdictionModel> list = new ArrayList<>();
 
-
-    @Override
-    public String toString() {
-        return "JurisdictionModel{" +
-                "uuid='" + uuid + '\'' +
-                ", jurName='" + jurName + '\'' +
-                ", jurParent='" + jurParent + '\'' +
-                ", jurFlag='" + jurFlag + '\'' +
-                ", version=" + version +
-                ", list=" + list +
-                '}';
-    }
 }

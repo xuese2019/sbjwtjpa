@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Table;
+import org.springframework.boot.jackson.JsonComponent;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -30,6 +31,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@JsonComponent
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OrganizationModel implements Serializable {
 
@@ -63,14 +65,4 @@ public class OrganizationModel implements Serializable {
     @Version
     private Long version;
 
-    @Override
-    public String toString() {
-        return "OrganizationModel{" +
-                "uuid='" + uuid + '\'' +
-                ", orgName='" + orgName + '\'' +
-                ", orgParent='" + orgParent + '\'' +
-                ", list=" + list +
-                ", version=" + version +
-                '}';
-    }
 }
