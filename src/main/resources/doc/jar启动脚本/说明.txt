@@ -1,0 +1,1 @@
+因为windows和linux换行符不一致，所以严禁在windows系统下打开start.sh文件，start.bat文件同理
