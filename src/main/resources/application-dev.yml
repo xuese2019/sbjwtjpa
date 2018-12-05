@@ -109,6 +109,7 @@ file:
 #  management.endpoint.health.show-details=always
 management:
   server:
+#    如果关闭此端口可以用-1
     port: 9001
   endpoints:
     web:
