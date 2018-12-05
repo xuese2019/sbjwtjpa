@@ -67,6 +67,8 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Transactional
     @Override
     public ResponseResult<OrganizationModel> update(OrganizationModel model) {
+        if (model.getUuid() == null || model.getUuid().isEmpty())
+            return new ResponseResult<>(false, "UUID不能为空");
         OrganizationModel one = jpa.getOne(model.getUuid());
         if (model.getOrgName() != null && !model.getOrgName().isEmpty())
             one.setOrgName(model.getOrgName());

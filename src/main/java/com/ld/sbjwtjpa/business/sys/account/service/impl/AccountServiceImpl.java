@@ -73,6 +73,8 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     @Override
     public ResponseResult<AccountModel> updateByUuid(AccountModel model) {
+        if (model.getUuid() == null || model.getUuid().isEmpty())
+            return new ResponseResult<>(false,"UUID不能为空");
         AccountModel one = jpa.getOne(model.getUuid());
         if (one != null) {
             if (model.getPassword() != null && !model.getPassword().isEmpty())
