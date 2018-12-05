@@ -59,7 +59,7 @@ import org.springframework.cache.annotation.EnableCaching;
  * @EnableAsync 启用异步方式处理任务，要使用此注解请详细查询使用方法以及配套的其它注解
  */
 //启用缓存支持
-@EnableCaching
+//@EnableCaching
 @SpringBootApplication
 public class SbjwtjpaApplication {
 

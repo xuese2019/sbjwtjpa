@@ -5,6 +5,9 @@ server:
     uri-encoding: UTF-8
   #    允许的http请求
   port-header: HEAD,PUT,DELETE,OPTIONS,TRACE,COPY,SEARCH,PROPFIND
+  #  是否启用响应压缩
+  compression:
+    enabled: true
 spring:
   #限制上传文件大小，springboot默认限制为2M
   http:
@@ -83,10 +86,10 @@ banner:
 #配置日志
 logging:
   #  默认日志格式 10M自动分割 最多存在7个文件
-#  file: sbjwtjpa.log
+  #  file: sbjwtjpa.log
   level:
     com.ld.sbjwtjpa: info
-#    自带的日志组属性
+    #    自带的日志组属性
     org.hibernate.SQL: debug
 
 #上传/导入文件地址
@@ -109,7 +112,7 @@ file:
 #  management.endpoint.health.show-details=always
 management:
   server:
-#    如果关闭此端口可以用-1
+    #    如果关闭此端口可以用-1
     port: 9001
   endpoints:
     web:
