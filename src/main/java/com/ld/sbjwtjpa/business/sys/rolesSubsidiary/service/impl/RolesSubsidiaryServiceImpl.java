@@ -33,13 +33,16 @@ public class RolesSubsidiaryServiceImpl implements RolesSubsidiaryService {
                         predicates.add(cb.and(p1));
                     }
                 }
-                return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+                return cb.and(predicates.toArray(new Predicate[0]));
             }
         };
     }
 
     @Override
     public ResponseResult<RolesSubsidiaryModel> save(RolesSubsidiaryModel model) {
+        List<RolesSubsidiaryModel> list = jpa.findByOrgIdAndJurId(model.getOrgId(), model.getJurId());
+        if (list.size() > 0)
+            return new ResponseResult<>(false, "当前记录已存在");
         jpa.save(model);
         return new ResponseResult<>(true, "成功");
     }

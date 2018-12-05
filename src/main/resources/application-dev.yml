@@ -47,6 +47,9 @@ spring:
       #配置jpa默认的表编码  字段排序编码
       properties:
         dialect: com.ld.sbjwtjpa.sys.jpa.MySQL5InnoDBDialectUtf8mb4
+#        Hibernate 5的默认设置
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     #      是否打印sql
     #    show-sql: true
     #    是否格式化sql
