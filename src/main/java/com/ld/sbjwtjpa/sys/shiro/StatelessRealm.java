@@ -50,38 +50,42 @@ public class StatelessRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection arg0) {
-        AccountModel token = (AccountModel) arg0.getPrimaryPrincipal();
-        // TODO Auto-generated method stub
-        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        AccountModel model = new AccountModel();
-        model.setUuid(token.getUuid());
-        ResponseResult<AccountModel> result = accountService.findOne(model);
-        if (result.isSuccess()) {
-            info.addRole("admin");
-            RolesSubsidiaryModel model1 = new RolesSubsidiaryModel();
-            model1.setOrgId(result.getData().getOrgId());
-            ResponseResult<List<RolesSubsidiaryModel>> result2 = rolesSubsidiaryService.findAll(model1);
-            List<String> list = new ArrayList<>();
-            if (result2.isSuccess()) {
-                result2.getData().forEach(k -> {
-                    list.add(k.getJurId());
-                });
-                ResponseResult<List<JurisdictionModel>> result3 = jurisdictionService.findByUuidIn(list);
-                if (result3.isSuccess()) {
-                    result3.getData().forEach(k -> {
-                        if (k != null) {
-                            info.addRole(k.getJurRole());
-                            info.addStringPermission(k.getJurFlag());
-                        }
+        try {
+            AccountModel token = (AccountModel) arg0.getPrimaryPrincipal();
+            SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+            AccountModel model = new AccountModel();
+            model.setUuid(token.getUuid());
+            ResponseResult<AccountModel> result = accountService.findOne(model);
+            if (result.isSuccess()) {
+                info.addRole("user");
+                RolesSubsidiaryModel model1 = new RolesSubsidiaryModel();
+                model1.setOrgId(result.getData().getOrgId());
+                ResponseResult<List<RolesSubsidiaryModel>> result2 = rolesSubsidiaryService.findAll(model1);
+                List<String> list = new ArrayList<>();
+                if (result2.isSuccess()) {
+                    result2.getData().forEach(k -> {
+                        list.add(k.getJurId());
                     });
+                    ResponseResult<List<JurisdictionModel>> result3 = jurisdictionService.findByUuidIn(list);
+                    if (result3.isSuccess()) {
+                        result3.getData().forEach(k -> {
+                            if (k != null) {
+                                info.addRole(k.getJurRole());
+                                info.addStringPermission(k.getJurFlag());
+                            }
+                        });
+                    }
                 }
             }
-        } else {
-            ResponseResult<AdminModel> result1 = adminService.findById(model.getUuid());
+            return info;
+        } catch (Exception e) {
+            AdminModel token = (AdminModel) arg0.getPrimaryPrincipal();
+            SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+            ResponseResult<AdminModel> result1 = adminService.findById(token.getUuid());
             if (result1.isSuccess())
                 info.addRole("admin");
+            return info;
         }
-        return info;
     }
 
     /**
@@ -110,9 +114,14 @@ public class StatelessRealm extends AuthorizingRealm {
         AccountModel model = new AccountModel();
         model.setAccount(account);
         ResponseResult<AccountModel> result = accountService.findOne(model);
-        if (!result.isSuccess())
-            throw new UnknownAccountException("当前用户已不存在!");
-        return new SimpleAuthenticationInfo(result.getData(), token, getName());
+        if (result.isSuccess())
+            return new SimpleAuthenticationInfo(result.getData(), token, getName());
+        else {
+            ResponseResult<AdminModel> result1 = adminService.findByAccount(account);
+            if (result1.isSuccess())
+                return new SimpleAuthenticationInfo(result1.getData(), token, getName());
+        }
+        throw new UnknownAccountException("当前用户已不存在!");
     }
 
 }

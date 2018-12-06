@@ -2,6 +2,8 @@ package com.ld.sbjwtjpa.business.sys.login.controller;
 
 import com.ld.sbjwtjpa.business.sys.account.model.AccountModel;
 import com.ld.sbjwtjpa.business.sys.account.service.AccountService;
+import com.ld.sbjwtjpa.business.sys.admin.model.AdminModel;
+import com.ld.sbjwtjpa.business.sys.admin.service.AdminService;
 import com.ld.sbjwtjpa.sys.shiro.JWTUtils;
 import com.ld.sbjwtjpa.utils.ResponseResult;
 import io.swagger.annotations.Api;
@@ -32,6 +34,8 @@ public class LoginController {
 
     @Autowired
     private AccountService service;
+    @Autowired
+    private AdminService adminService;
 //    @Autowired
 //    DefaultKaptcha defaultKaptcha;
 
@@ -50,15 +54,28 @@ public class LoginController {
             if (md5Password.equals(result1.getData().getPassword())) {
                 try {
                     String s = JWTUtils.creaToken(result1.getData().getAccount(), result1.getData().getUuid(), result1.getData().getOrgId());
-                    return new ResponseResult<>(true, result1.getData().getUuid() + "," + result1.getData().getAccount(), s);
+                    return new ResponseResult<>(true, result1.getData().getAccount() + ",user", s);
                 } catch (Exception e) {
                     e.printStackTrace();
                     return new ResponseResult<>(false, "令牌生成错误");
                 }
-            } else
-                return new ResponseResult<>(false, "账号密码错误");
-        } else
-            return new ResponseResult<>(false, "账号密码错误");
+            }
+        } else {
+            ResponseResult<AdminModel> result2 = adminService.findByAccount(model.getAccount());
+            if (result2.isSuccess()) {
+                String md5Password = DigestUtils.md5DigestAsHex(model.getPassword().getBytes(StandardCharsets.UTF_8));
+                if (md5Password.equals(result2.getData().getPassword())) {
+                    try {
+                        String s = JWTUtils.creaToken(result2.getData().getAccount(), result2.getData().getUuid(), "admin");
+                        return new ResponseResult<>(true, result2.getData().getAccount() + ",admin", s);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return new ResponseResult<>(false, "令牌生成错误");
+                    }
+                }
+            }
+        }
+        return new ResponseResult<>(false, "账号密码错误");
     }
 
 //    @RequestMapping(value = "/defaultKaptcha", method = RequestMethod.GET)
