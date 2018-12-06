@@ -74,16 +74,19 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public ResponseResult<AccountModel> updateByUuid(AccountModel model) {
         if (model.getUuid() == null || model.getUuid().isEmpty())
-            return new ResponseResult<>(false,"UUID不能为空");
+            return new ResponseResult<>(false, "UUID不能为空");
         AccountModel one = jpa.getOne(model.getUuid());
-        if (one != null) {
+        if (one.getUuid() != null) {
+            if (model.getVersion() < one.getVersion())
+                return new ResponseResult<>(false, "数据过于陈旧，请刷新后在进行操作");
             if (model.getPassword() != null && !model.getPassword().isEmpty())
                 one.setPassword(model.getPassword());
             if (model.getEmails() != null && !model.getEmails().isEmpty())
                 one.setEmails(model.getEmails());
+            jpa.flush();
+            return new ResponseResult<>(true, "成功");
         }
-        jpa.flush();
-        return new ResponseResult<>(true, "成功");
+        return new ResponseResult<>(false, "数据不存在，请刷新后在进行操作");
     }
 
     @Override

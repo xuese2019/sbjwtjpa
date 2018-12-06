@@ -70,12 +70,17 @@ public class OrganizationServiceImpl implements OrganizationService {
         if (model.getUuid() == null || model.getUuid().isEmpty())
             return new ResponseResult<>(false, "UUID不能为空");
         OrganizationModel one = jpa.getOne(model.getUuid());
-        if (model.getOrgName() != null && !model.getOrgName().isEmpty())
-            one.setOrgName(model.getOrgName());
-        if (model.getOrgParent() != null && !model.getOrgParent().isEmpty())
-            one.setOrgParent(model.getOrgParent());
-        jpa.flush();
-        return new ResponseResult<>(true, "成功");
+        if (one.getUuid() != null) {
+            if (model.getVersion() < one.getVersion())
+                return new ResponseResult<>(false, "数据过于陈旧，请刷新后在进行操作");
+            if (model.getOrgName() != null && !model.getOrgName().isEmpty())
+                one.setOrgName(model.getOrgName());
+            if (model.getOrgParent() != null && !model.getOrgParent().isEmpty())
+                one.setOrgParent(model.getOrgParent());
+            jpa.flush();
+            return new ResponseResult<>(true, "成功");
+        }
+        return new ResponseResult<>(false, "数据不存在，请刷新后在进行操作");
     }
 
     @Override

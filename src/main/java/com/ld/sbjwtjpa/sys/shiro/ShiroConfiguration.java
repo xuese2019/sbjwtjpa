@@ -36,14 +36,8 @@ public class ShiroConfiguration {
     }
 
     @Bean
-    public StatelessRealm statelessRealm() {
-        return new StatelessRealm();
-    }
-
-    @Bean
     public StatelessDefaultSubjectFactory statelessDefaultSubjectFactory() {
-        StatelessDefaultSubjectFactory statelessDefaultSubjectFactory = new StatelessDefaultSubjectFactory();
-        return statelessDefaultSubjectFactory;
+        return new StatelessDefaultSubjectFactory();
     }
 
     @Bean(name = "sessionManager")
@@ -64,17 +58,13 @@ public class ShiroConfiguration {
     @Bean(name = "securityManager")
     public DefaultWebSecurityManager defaultWebSecurityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-
         DefaultSubjectDAO dao = (DefaultSubjectDAO) securityManager.getSubjectDAO();
         DefaultSessionStorageEvaluator defaultSessionStorageEvaluator = (DefaultSessionStorageEvaluator) dao.getSessionStorageEvaluator();
         defaultSessionStorageEvaluator.setSessionStorageEnabled(false);
-
         securityManager.setSubjectFactory(statelessDefaultSubjectFactory());
         securityManager.setSessionManager(defaultSessionManager());
         SecurityUtils.setSecurityManager(securityManager);
-
-        securityManager.setRealm(statelessRealm());
-
+        securityManager.setRealm(new StatelessRealm());
         return securityManager;
     }
 
