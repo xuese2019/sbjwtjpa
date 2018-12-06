@@ -55,6 +55,8 @@ public class AccountController {
                                                      BindingResult result) {
         if (result.hasErrors())
             return new ResponseResult<>(false, result.getAllErrors().get(0).getDefaultMessage());
+        String md5Password = DigestUtils.md5DigestAsHex(model.getPassword().getBytes(StandardCharsets.UTF_8));
+        model.setPassword(md5Password);
         return service.updateByUuid(model);
     }
 
@@ -80,5 +82,10 @@ public class AccountController {
     @RequestMapping(value = "/findAll", method = RequestMethod.POST)
     public ResponseResult<List<AccountModel>> findAll(@RequestBody AccountModel model) {
         return service.findAll(model);
+    }
+
+    public static void main(String[] args) {
+        String md5Password = DigestUtils.md5DigestAsHex("string".getBytes(StandardCharsets.UTF_8));
+        System.out.println(md5Password);
     }
 }
