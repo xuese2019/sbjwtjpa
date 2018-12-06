@@ -36,8 +36,14 @@ public class ShiroConfiguration {
     }
 
     @Bean
+    public StatelessRealm statelessRealm() {
+        return new StatelessRealm();
+    }
+
+    @Bean
     public StatelessDefaultSubjectFactory statelessDefaultSubjectFactory() {
-        return new StatelessDefaultSubjectFactory();
+        StatelessDefaultSubjectFactory statelessDefaultSubjectFactory = new StatelessDefaultSubjectFactory();
+        return statelessDefaultSubjectFactory;
     }
 
     @Bean(name = "sessionManager")
@@ -64,7 +70,7 @@ public class ShiroConfiguration {
         securityManager.setSubjectFactory(statelessDefaultSubjectFactory());
         securityManager.setSessionManager(defaultSessionManager());
         SecurityUtils.setSecurityManager(securityManager);
-        securityManager.setRealm(new StatelessRealm());
+        securityManager.setRealm(statelessRealm());
         return securityManager;
     }
 
