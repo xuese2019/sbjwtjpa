@@ -83,9 +83,4 @@ public class AccountController {
     public ResponseResult<List<AccountModel>> findAll(@RequestBody AccountModel model) {
         return service.findAll(model);
     }
-
-    public static void main(String[] args) {
-        String md5Password = DigestUtils.md5DigestAsHex("string".getBytes(StandardCharsets.UTF_8));
-        System.out.println(md5Password);
-    }
 }
