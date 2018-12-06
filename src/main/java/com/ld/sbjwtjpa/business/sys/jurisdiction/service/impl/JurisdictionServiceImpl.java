@@ -43,6 +43,10 @@ public class JurisdictionServiceImpl implements JurisdictionService {
                         Predicate p1 = cb.equal(root.get("jurName").as(String.class), model.getJurName());
                         predicates.add(cb.and(p1));
                     }
+                    if (model.getJurType() > 0) {
+                        Predicate p1 = cb.equal(root.get("jurType").as(Integer.class), model.getJurType());
+                        predicates.add(cb.and(p1));
+                    }
                 }
                 return cb.and(predicates.toArray(new Predicate[predicates.size()]));
             }
@@ -149,5 +153,14 @@ public class JurisdictionServiceImpl implements JurisdictionService {
             }
         }
         return treeNode;
+    }
+
+    @Override
+    public ResponseResult<List<JurisdictionModel>> findJurisdictionByOrg(String orgId) {
+        List<JurisdictionModel> list = jpa.findJurisdictionByOrg(orgId);
+        if (list != null && list.size() > 0)
+            return new ResponseResult<>(true, "成功", list);
+        else
+            return new ResponseResult<>(false, "未查询到数据");
     }
 }

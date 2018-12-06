@@ -12,4 +12,5 @@ public interface RolesSubsidiaryService {
     ResponseResult<RolesSubsidiaryModel> delete(String uuid);
 
     ResponseResult<List<RolesSubsidiaryModel>> findAll(RolesSubsidiaryModel model);
+
 }

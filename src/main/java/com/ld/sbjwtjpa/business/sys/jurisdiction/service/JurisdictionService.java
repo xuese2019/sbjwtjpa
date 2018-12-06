@@ -28,4 +28,6 @@ public interface JurisdictionService {
     //    递归方式查询所有
     ResponseResult<List<JurisdictionModel>> findRecursionAll();
 
+    ResponseResult<List<JurisdictionModel>> findJurisdictionByOrg(String orgId);
+
 }

@@ -70,7 +70,7 @@ public class StatelessRealm extends AuthorizingRealm {
                 if (result3.isSuccess()) {
                     result3.getData().forEach(k -> {
                         if (k != null) {
-                            info.addRole(k.getJurFlag().split(":")[0]);
+                            info.addRole(k.getJurRole());
                             info.addStringPermission(k.getJurFlag());
                         }
                     });

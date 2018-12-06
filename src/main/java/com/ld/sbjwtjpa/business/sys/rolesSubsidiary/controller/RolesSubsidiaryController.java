@@ -1,6 +1,8 @@
 package com.ld.sbjwtjpa.business.sys.rolesSubsidiary.controller;
 
 import com.ld.sbjwtjpa.business.sys.account.service.AccountService;
+import com.ld.sbjwtjpa.business.sys.jurisdiction.model.JurisdictionModel;
+import com.ld.sbjwtjpa.business.sys.jurisdiction.service.JurisdictionService;
 import com.ld.sbjwtjpa.business.sys.rolesSubsidiary.model.RolesSubsidiaryModel;
 import com.ld.sbjwtjpa.business.sys.rolesSubsidiary.service.RolesSubsidiaryService;
 import com.ld.sbjwtjpa.sys.shiro.JWTUtils;
@@ -27,6 +29,8 @@ public class RolesSubsidiaryController {
     private RolesSubsidiaryService service;
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private JurisdictionService jurisdictionService;
 
     @ApiOperation(value = "赋予权限")
     @RequiresRoles(value = {"admin"})
@@ -48,7 +52,7 @@ public class RolesSubsidiaryController {
         return service.delete(uuid);
     }
 
-    @ApiOperation(value = "根据条件查询,返回当前账户有哪些权限")
+    @ApiOperation(value = "根据条件查询,返回当前账户有哪些权限，只返回关联信息")
     @RequestMapping(value = "/roles/findAllByUser", method = RequestMethod.GET)
     public ResponseResult<List<RolesSubsidiaryModel>> findAllByUser(HttpServletRequest request) {
         String token = JWTUtils.getOrgid(request);
@@ -57,6 +61,15 @@ public class RolesSubsidiaryController {
         RolesSubsidiaryModel model1 = new RolesSubsidiaryModel();
         model1.setOrgId(token);
         return service.findAll(model1);
+    }
+
+    @ApiOperation(value = "根据条件查询,返回当前账户有哪些权限，返回权限的完整信息")
+    @RequestMapping(value = "/roles/jurisdiction", method = RequestMethod.GET)
+    public ResponseResult<List<JurisdictionModel>> findJurisdictionByUser(HttpServletRequest request) {
+        String token = JWTUtils.getOrgid(request);
+        if (token == null)
+            return new ResponseResult<>(false, "logout");
+        return jurisdictionService.findJurisdictionByOrg(token);
     }
 
     @ApiOperation(value = "根据条件查询,返回指定职位有哪些权限")

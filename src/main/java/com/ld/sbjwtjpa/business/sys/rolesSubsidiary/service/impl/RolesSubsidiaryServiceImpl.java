@@ -62,4 +62,5 @@ public class RolesSubsidiaryServiceImpl implements RolesSubsidiaryService {
         else
             return new ResponseResult<>(false, "未查询到数据");
     }
+
 }
