@@ -2,6 +2,7 @@ package com.ld.sbjwtjpa.business.sys.account.controller;
 
 import com.ld.sbjwtjpa.business.sys.account.model.AccountModel;
 import com.ld.sbjwtjpa.business.sys.account.service.AccountService;
+import com.ld.sbjwtjpa.sys.shiro.JWTUtils;
 import com.ld.sbjwtjpa.utils.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -13,6 +14,7 @@ import org.springframework.util.DigestUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -48,14 +50,46 @@ public class AccountController {
         return service.deleteByUuid(uuid);
     }
 
-    @ApiOperation(value = "根据id修改实体", notes = "后台带有数据验证")
+//    @ApiOperation(value = "根据id修改实体", notes = "后台带有数据验证")
+//    @RequiresRoles(value = {"admin"})
+//    @RequestMapping(value = "/account", method = RequestMethod.PUT)
+//    public ResponseResult<AccountModel> updateByUuid(@Valid @RequestBody AccountModel model,
+//                                                     BindingResult result) {
+//        if (result.hasErrors())
+//            return new ResponseResult<>(false, result.getAllErrors().get(0).getDefaultMessage());
+//        String md5Password = DigestUtils.md5DigestAsHex(model.getPassword().getBytes(StandardCharsets.UTF_8));
+//        model.setPassword(md5Password);
+//        return service.updateByUuid(model);
+//    }
+
+    @ApiOperation(value = "修改当前登陆账号的密码", notes = "修改当前登陆账号的密码")
+    @ApiImplicitParam(paramType = "body", name = "password", value = "修改后的密码", required = true, dataType = "String")
+    @RequestMapping(value = "/account/current", method = RequestMethod.PUT)
+    public ResponseResult<AccountModel> updatePassword(HttpServletRequest request,
+                                                       @RequestBody String password) {
+        if (password == null || password.isEmpty())
+            return new ResponseResult<>(false, "密码不能为空");
+        String token = JWTUtils.getAccId(request);
+        if (token == null)
+            return new ResponseResult<>(false, "logout");
+        String md5Password = DigestUtils.md5DigestAsHex(password.getBytes(StandardCharsets.UTF_8));
+        AccountModel model = new AccountModel();
+        model.setUuid(token);
+        model.setPassword(md5Password);
+        return service.updateByUuid(model);
+    }
+
+    @ApiOperation(value = "重置指定账号的密码,默认密码为 123456", notes = "重置指定账号的密码,默认密码为 123456")
+    @ApiImplicitParam(paramType = "body", name = "accid", value = "需要重置密码的账户的主键", required = true, dataType = "String")
     @RequiresRoles(value = {"admin"})
-    @RequestMapping(value = "/account", method = RequestMethod.PUT)
-    public ResponseResult<AccountModel> updateByUuid(@Valid @RequestBody AccountModel model,
-                                                     BindingResult result) {
-        if (result.hasErrors())
-            return new ResponseResult<>(false, result.getAllErrors().get(0).getDefaultMessage());
-        String md5Password = DigestUtils.md5DigestAsHex(model.getPassword().getBytes(StandardCharsets.UTF_8));
+    @RequestMapping(value = "/account/reset", method = RequestMethod.PUT)
+    public ResponseResult<AccountModel> updateResetPassword(HttpServletRequest request,
+                                                            @RequestBody String accid) {
+        if (accid == null || accid.isEmpty())
+            return new ResponseResult<>(false, "需要重置的账号主键不能为空");
+        String md5Password = DigestUtils.md5DigestAsHex("123456".getBytes(StandardCharsets.UTF_8));
+        AccountModel model = new AccountModel();
+        model.setUuid(accid);
         model.setPassword(md5Password);
         return service.updateByUuid(model);
     }
