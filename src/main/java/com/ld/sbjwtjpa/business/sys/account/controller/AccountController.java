@@ -63,35 +63,33 @@ public class AccountController {
 //    }
 
     @ApiOperation(value = "修改当前登陆账号的密码", notes = "修改当前登陆账号的密码")
-    @ApiImplicitParam(paramType = "body", name = "password", value = "修改后的密码", required = true, dataType = "String")
     @RequestMapping(value = "/account/current", method = RequestMethod.PUT)
     public ResponseResult<AccountModel> updatePassword(HttpServletRequest request,
-                                                       @RequestBody String password) {
-        if (password == null || password.isEmpty())
+                                                       @RequestBody AccountModel model) {
+        if (model.getPassword() == null || model.getPassword().isEmpty())
             return new ResponseResult<>(false, "密码不能为空");
         String token = JWTUtils.getAccId(request);
         if (token == null)
             return new ResponseResult<>(false, "logout");
-        String md5Password = DigestUtils.md5DigestAsHex(password.getBytes(StandardCharsets.UTF_8));
-        AccountModel model = new AccountModel();
-        model.setUuid(token);
-        model.setPassword(md5Password);
-        return service.updateByUuid(model);
+        String md5Password = DigestUtils.md5DigestAsHex(model.getPassword().getBytes(StandardCharsets.UTF_8));
+        AccountModel model2 = new AccountModel();
+        model2.setUuid(token);
+        model2.setPassword(md5Password);
+        return service.updateByUuid(model2);
     }
 
-    @ApiOperation(value = "重置指定账号的密码,默认密码为 123456", notes = "重置指定账号的密码,默认密码为 123456")
-    @ApiImplicitParam(paramType = "body", name = "accid", value = "需要重置密码的账户的主键", required = true, dataType = "String")
+    @ApiOperation(value = "重置指定账号的密码,默认密码为 123456", notes = "只需要传递uuid和password。重置指定账号的密码,默认密码为 123456")
     @RequiresRoles(value = {"admin"})
     @RequestMapping(value = "/account/reset", method = RequestMethod.PUT)
     public ResponseResult<AccountModel> updateResetPassword(HttpServletRequest request,
-                                                            @RequestBody String accid) {
-        if (accid == null || accid.isEmpty())
+                                                            @RequestBody AccountModel model) {
+        if (model.getUuid() == null || model.getUuid().isEmpty())
             return new ResponseResult<>(false, "需要重置的账号主键不能为空");
         String md5Password = DigestUtils.md5DigestAsHex("123456".getBytes(StandardCharsets.UTF_8));
-        AccountModel model = new AccountModel();
-        model.setUuid(accid);
-        model.setPassword(md5Password);
-        return service.updateByUuid(model);
+        AccountModel model2 = new AccountModel();
+        model2.setUuid(model.getUuid());
+        model2.setPassword(md5Password);
+        return service.updateByUuid(model2);
     }
 
     @ApiOperation(value = "根据id获取实体", notes = "优先利用id查找,id找不到将条件作为account查找")

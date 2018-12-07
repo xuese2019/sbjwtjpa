@@ -39,7 +39,7 @@ public class AccountServiceImpl implements AccountService {
                         predicates.add(cb.and(p1));
                     }
                     if (model.getAccount() != null && !model.getAccount().isEmpty()) {
-                        Predicate p1 = cb.like(root.get("account").as(String.class), "%" + model.getAccount() + "%");
+                        Predicate p1 = cb.equal(root.get("account").as(String.class), model.getAccount());
                         predicates.add(cb.and(p1));
                     }
                     if (model.getOrgId() != null && !model.getOrgId().isEmpty()) {
@@ -75,10 +75,11 @@ public class AccountServiceImpl implements AccountService {
     public ResponseResult<AccountModel> updateByUuid(AccountModel model) {
         if (model.getUuid() == null || model.getUuid().isEmpty())
             return new ResponseResult<>(false, "UUID不能为空");
-        AccountModel one = jpa.getOne(model.getUuid());
-        if (one.getUuid() != null) {
-            if (model.getVersion() < one.getVersion())
-                return new ResponseResult<>(false, "数据过于陈旧，请刷新后在进行操作");
+        Optional<AccountModel> opt = jpa.findById(model.getUuid());
+        if (opt.orElse(null) != null) {
+            AccountModel one = opt.get();
+//            if (model.getVersion() < one.getVersion())
+//                return new ResponseResult<>(false, "数据过于陈旧，请刷新后在进行操作");
             if (model.getPassword() != null && !model.getPassword().isEmpty())
                 one.setPassword(model.getPassword());
             if (model.getEmails() != null && !model.getEmails().isEmpty())
@@ -86,7 +87,7 @@ public class AccountServiceImpl implements AccountService {
             jpa.flush();
             return new ResponseResult<>(true, "成功");
         }
-        return new ResponseResult<>(false,"数据不存在，请刷新后在进行操作");
+        return new ResponseResult<>(false, "数据不存在，请刷新后在进行操作");
     }
 
     @Override

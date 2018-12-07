@@ -70,8 +70,9 @@ public class JurisdictionServiceImpl implements JurisdictionService {
     @Transactional
     @Override
     public ResponseResult<JurisdictionModel> update(JurisdictionModel model) {
-        JurisdictionModel one = jpa.getOne(model.getUuid());
-        if (one.getUuid() != null) {
+        Optional<JurisdictionModel> opt = jpa.findById(model.getUuid());
+        if (opt.orElse(null) != null) {
+            JurisdictionModel one = opt.get();
             if (model.getVersion() < one.getVersion())
                 return new ResponseResult<>(false, "数据过于陈旧，请刷新后在进行操作");
             if (one.getJurFlag() != null && !one.getJurFlag().isEmpty())

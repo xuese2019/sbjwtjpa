@@ -69,8 +69,10 @@ public class OrganizationServiceImpl implements OrganizationService {
     public ResponseResult<OrganizationModel> update(OrganizationModel model) {
         if (model.getUuid() == null || model.getUuid().isEmpty())
             return new ResponseResult<>(false, "UUID不能为空");
-        OrganizationModel one = jpa.getOne(model.getUuid());
-        if (one.getUuid() != null) {
+
+        Optional<OrganizationModel> opt = jpa.findById(model.getUuid());
+        if (opt.orElse(null) != null) {
+            OrganizationModel one = opt.get();
             if (model.getVersion() < one.getVersion())
                 return new ResponseResult<>(false, "数据过于陈旧，请刷新后在进行操作");
             if (model.getOrgName() != null && !model.getOrgName().isEmpty())

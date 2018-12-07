@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.mail.AuthenticationFailedException;
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 import java.io.FileNotFoundException;
@@ -53,6 +54,28 @@ public class GlobalExceptionHandler {
         ResponseResult<String> result = new ResponseResult<>();
         result.setSuccess(false);
         result.setMessage(exception.getMessage());
+        return result;
+    }
+
+    /**
+     * 实体不存在
+     *
+     * @param request
+     * @param exception
+     * @return
+     */
+    @ExceptionHandler(value = EntityNotFoundException.class)
+    public ResponseResult<String> entityNotFoundException(HttpServletRequest request,
+                                                          Exception exception) {
+        exception.printStackTrace();
+        log.debug("ERROR::::：" + exception.getLocalizedMessage() + "::::::" + new Date());
+        log.debug("ERROR::::：" + exception.getCause() + "::::::" + new Date());
+        log.debug("ERROR::::：" + Arrays.toString(exception.getSuppressed()) + "::::::" + new Date());
+        log.debug("ERROR::::：" + exception.getMessage() + "::::::" + new Date());
+        log.debug("ERROR::::：" + Arrays.toString(exception.getStackTrace()) + "::::::" + new Date());
+        ResponseResult<String> result = new ResponseResult<>();
+        result.setSuccess(false);
+        result.setMessage("数据未找到，请确认传入数据的准确性");
         return result;
     }
 
@@ -393,7 +416,7 @@ public class GlobalExceptionHandler {
         log.debug("ERROR::::：" + Arrays.toString(exception.getStackTrace()) + "::::::" + new Date());
         ResponseResult<String> result = new ResponseResult<>();
         result.setSuccess(false);
-        result.setMessage("空指针错误，请确认数据准确性");
+        result.setMessage("数据未找到");
         return result;
     }
 

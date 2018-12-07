@@ -73,10 +73,10 @@ public class RolesSubsidiaryController {
     }
 
     @ApiOperation(value = "根据条件查询,返回指定职位有哪些权限")
-    @RequestMapping(value = "/roles/findAllByOrg", method = RequestMethod.GET)
-    public ResponseResult<List<RolesSubsidiaryModel>> findAllByOrg(String orgid) {
+    @RequestMapping(value = "/roles/findAllByOrg/{orgId}", method = RequestMethod.GET)
+    public ResponseResult<List<RolesSubsidiaryModel>> findAllByOrg(@PathVariable("orgId") String orgId) {
         RolesSubsidiaryModel model1 = new RolesSubsidiaryModel();
-        model1.setOrgId(orgid);
+        model1.setOrgId(orgId);
         return service.findAll(model1);
     }
 }
