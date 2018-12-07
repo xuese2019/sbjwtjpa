@@ -15,6 +15,7 @@ import javax.mail.AuthenticationFailedException;
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
+import javax.validation.UnexpectedTypeException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -93,6 +94,28 @@ public class GlobalExceptionHandler {
         ResponseResult<String> result = new ResponseResult<>();
         result.setSuccess(false);
         result.setMessage(exception.getMessage());
+        return result;
+    }
+
+    /**
+     * 数据类型转换错误
+     *
+     * @param request
+     * @param exception
+     * @return
+     */
+    @ExceptionHandler(value = UnexpectedTypeException.class)
+    public ResponseResult<String> unexpectedTypeException(HttpServletRequest request,
+                                                          Exception exception) {
+        exception.printStackTrace();
+        log.debug("ERROR::::：" + exception.getLocalizedMessage() + "::::::" + new Date());
+        log.debug("ERROR::::：" + exception.getCause() + "::::::" + new Date());
+        log.debug("ERROR::::：" + Arrays.toString(exception.getSuppressed()) + "::::::" + new Date());
+        log.debug("ERROR::::：" + exception.getMessage() + "::::::" + new Date());
+        log.debug("ERROR::::：" + Arrays.toString(exception.getStackTrace()) + "::::::" + new Date());
+        ResponseResult<String> result = new ResponseResult<>();
+        result.setSuccess(false);
+        result.setMessage("数据类型转换错误");
         return result;
     }
 
