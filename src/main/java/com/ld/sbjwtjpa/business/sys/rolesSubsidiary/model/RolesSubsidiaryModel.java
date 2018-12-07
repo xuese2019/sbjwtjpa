@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Table;
-import org.springframework.boot.jackson.JsonComponent;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,7 +29,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@JsonComponent
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RolesSubsidiaryModel implements Serializable {
 

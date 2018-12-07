@@ -1,5 +1,6 @@
 package com.ld.sbjwtjpa;
 
+import com.ld.sbjwtjpa.utils.MyExceptions;
 import com.ld.sbjwtjpa.utils.ResponseResult;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.AuthorizationException;
@@ -34,6 +35,44 @@ import java.util.Date;
 @ControllerAdvice
 @RestController
 public class GlobalExceptionHandler {
+
+    /**
+     * 自定义未找到数据
+     *
+     * @param request
+     * @param exception
+     * @return
+     */
+    @ExceptionHandler(value = MyExceptions.class)
+    public ResponseResult<String> myExceptions(HttpServletRequest request,
+                                               Exception exception) {
+        exception.printStackTrace();
+        log.debug("ERROR::::：" + exception.getLocalizedMessage() + "::::::" + new Date());
+        log.debug("ERROR::::：" + exception.getCause() + "::::::" + new Date());
+        log.debug("ERROR::::：" + Arrays.toString(exception.getSuppressed()) + "::::::" + new Date());
+        log.debug("ERROR::::：" + exception.getMessage() + "::::::" + new Date());
+        log.debug("ERROR::::：" + Arrays.toString(exception.getStackTrace()) + "::::::" + new Date());
+        ResponseResult<String> result = new ResponseResult<>();
+        result.setSuccess(false);
+        String errorStr = "";
+        switch (exception.getMessage()) {
+            case "1":
+                errorStr = "未查询到记录";
+                break;
+            case "2":
+                errorStr = "数据过于陈旧，请刷新后在尝试";
+            case "3":
+                errorStr = "需要操作的对象的主键不能为空";
+            case "4":
+                errorStr = "数据已存在";
+            case "5":
+                errorStr = "未找到需要操作的数据";
+            default:
+                errorStr = exception.getMessage();
+        }
+        result.setMessage(errorStr);
+        return result;
+    }
 
     /**
      * 非法参数

@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Table;
-import org.springframework.boot.jackson.JsonComponent;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -30,8 +29,6 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-//jackjson 序列化
-@JsonComponent
 //jackjson 序列化忽略不存在的字段
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AccountModel implements Serializable {

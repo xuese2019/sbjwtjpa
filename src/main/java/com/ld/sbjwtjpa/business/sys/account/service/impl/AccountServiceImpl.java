@@ -3,6 +3,7 @@ package com.ld.sbjwtjpa.business.sys.account.service.impl;
 import com.ld.sbjwtjpa.business.sys.account.jpa.AccountJpa;
 import com.ld.sbjwtjpa.business.sys.account.model.AccountModel;
 import com.ld.sbjwtjpa.business.sys.account.service.AccountService;
+import com.ld.sbjwtjpa.utils.MyExceptions;
 import com.ld.sbjwtjpa.utils.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -74,7 +75,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public ResponseResult<AccountModel> updateByUuid(AccountModel model) {
         if (model.getUuid() == null || model.getUuid().isEmpty())
-            return new ResponseResult<>(false, "UUID不能为空");
+            throw new MyExceptions("需要修改的数据的UUID不能为空");
         Optional<AccountModel> opt = jpa.findById(model.getUuid());
         if (opt.orElse(null) != null) {
             AccountModel one = opt.get();

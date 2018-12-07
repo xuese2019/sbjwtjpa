@@ -3,6 +3,7 @@ package com.ld.sbjwtjpa.business.sys.organization.service.impl;
 import com.ld.sbjwtjpa.business.sys.organization.jpa.OrganizationJpa;
 import com.ld.sbjwtjpa.business.sys.organization.model.OrganizationModel;
 import com.ld.sbjwtjpa.business.sys.organization.service.OrganizationService;
+import com.ld.sbjwtjpa.utils.MyExceptions;
 import com.ld.sbjwtjpa.utils.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -59,7 +60,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     public ResponseResult<OrganizationModel> delete(String uuid) {
         List<OrganizationModel> list = jpa.findByOrgParent(uuid);
         if (list.size() > 0)
-            return new ResponseResult<>(false, "请先删除下级");
+            throw new MyExceptions("请先删除下级");
         jpa.deleteById(uuid);
         return new ResponseResult<>(true, "成功");
     }
@@ -68,7 +69,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Override
     public ResponseResult<OrganizationModel> update(OrganizationModel model) {
         if (model.getUuid() == null || model.getUuid().isEmpty())
-            return new ResponseResult<>(false, "UUID不能为空");
+        throw new MyExceptions("需要修改的数据的UUID不能为空");
 
         Optional<OrganizationModel> opt = jpa.findById(model.getUuid());
         if (opt.orElse(null) != null) {
