@@ -23,4 +23,6 @@ public interface JurisdictionJpa extends JpaSpecificationExecutor<JurisdictionMo
             " left join roles_subsidiary_table r on r.jur_id = j.uuid" +
             " where r.org_id = ?1", nativeQuery = true)
     List<JurisdictionModel> findJurisdictionByOrg(@Param("orgId") String orgId);
+
+    List<JurisdictionModel> findByJurParent(String jurParent);
 }

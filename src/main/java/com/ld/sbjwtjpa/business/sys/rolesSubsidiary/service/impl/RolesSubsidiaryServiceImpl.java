@@ -1,5 +1,7 @@
 package com.ld.sbjwtjpa.business.sys.rolesSubsidiary.service.impl;
 
+import com.ld.sbjwtjpa.business.sys.jurisdiction.jpa.JurisdictionJpa;
+import com.ld.sbjwtjpa.business.sys.jurisdiction.model.JurisdictionModel;
 import com.ld.sbjwtjpa.business.sys.rolesSubsidiary.jpa.RolesSubsidiaryJpa;
 import com.ld.sbjwtjpa.business.sys.rolesSubsidiary.model.RolesSubsidiaryModel;
 import com.ld.sbjwtjpa.business.sys.rolesSubsidiary.service.RolesSubsidiaryService;
@@ -14,12 +16,15 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RolesSubsidiaryServiceImpl implements RolesSubsidiaryService {
 
     @Autowired
     private RolesSubsidiaryJpa jpa;
+    @Autowired
+    private JurisdictionJpa jurisdictionJpa;
 
     //    查询条件
     private Specification<RolesSubsidiaryModel> queryTj(RolesSubsidiaryModel model) {
@@ -44,7 +49,39 @@ public class RolesSubsidiaryServiceImpl implements RolesSubsidiaryService {
         if (list.size() > 0)
             return new ResponseResult<>(false, "当前记录已存在");
         jpa.save(model);
+        Optional<JurisdictionModel> optJur = jurisdictionJpa.findById(model.getJurId());
+        if (optJur.orElse(null) != null) {
+            if (!optJur.get().getJurParent().equals("0")) {
+                List<JurisdictionModel> list2 = new ArrayList<>();
+                list2 = recuJur(optJur.get().getJurParent(), list2);
+                if (list2.size() > 0) {
+                    list2.forEach(k -> {
+                        RolesSubsidiaryModel model3 = new RolesSubsidiaryModel();
+                        model3.setOrgId(model.getOrgId());
+                        model3.setJurId(k.getUuid());
+                        List<RolesSubsidiaryModel> list3 = jpa.findByOrgIdAndJurId(model3.getOrgId(), model3.getJurId());
+                        if (list3.size() <= 0) {
+                            jpa.save(model3);
+                        } else
+                            return;
+                    });
+                }
+            }
+        }
         return new ResponseResult<>(true, "成功");
+    }
+
+    private List<JurisdictionModel> recuJur(String id, List<JurisdictionModel> list) {
+        Optional<JurisdictionModel> opt = jurisdictionJpa.findById(id);
+        if (opt.orElse(null) != null) {
+            JurisdictionModel model = opt.get();
+            list.add(model);
+            if (model.getJurParent().equals("0"))
+                return list;
+            else
+                return recuJur(model.getJurParent(), list);
+        }
+        return list;
     }
 
     @Override
