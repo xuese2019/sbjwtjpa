@@ -83,7 +83,7 @@ public class PeopleController {
     @RequestMapping(value = "/people/page/{pageNow}", method = RequestMethod.POST)
     public ResponseResult<Page<PeopleModel>> findAllPage(@PathVariable("pageNow") int pageNow,
                                                          @RequestBody PeopleModel model) {
-        return service.findAllPage(pageNow, 3, model);
+        return service.findAllPage(pageNow, pageSize, model);
     }
 
 }
