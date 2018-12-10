@@ -25,7 +25,7 @@ public class PeopleController {
     @Autowired
     private PeopleService service;
 
-    @ApiOperation(value = "新增实体,如果已存在则修改", notes = "权限标记 people:save")
+    @ApiOperation(value = "新增实体", notes = "权限标记 people:save")
     @RequiresPermissions(value = {"people:save"})
     @RequestMapping(value = "/people", method = RequestMethod.POST)
     public ResponseResult<PeopleModel> save(@Valid @RequestBody PeopleModel model,
@@ -52,14 +52,14 @@ public class PeopleController {
         return service.updateByUuid(model);
     }
 
-    @ApiOperation(value = "根据账户id修改实体，主要用户个人资料的修改", notes = "无权限标记")
-    @RequestMapping(value = "/people/accid", method = RequestMethod.PUT)
-    public ResponseResult<PeopleModel> updateByAccId(@Valid @RequestBody PeopleModel model,
-                                                     BindingResult result) {
-        if (result.hasErrors())
-            return new ResponseResult<>(false, result.getAllErrors().get(0).getDefaultMessage());
-        return service.updateByAccId(model);
-    }
+//    @ApiOperation(value = "根据账户id修改实体，主要用户个人资料的修改", notes = "无权限标记")
+//    @RequestMapping(value = "/people/accid", method = RequestMethod.PUT)
+//    public ResponseResult<PeopleModel> updateByAccId(@Valid @RequestBody PeopleModel model,
+//                                                     BindingResult result) {
+//        if (result.hasErrors())
+//            return new ResponseResult<>(false, result.getAllErrors().get(0).getDefaultMessage());
+//        return service.updateByAccId(model);
+//    }
 
     @ApiOperation(value = "根据id获取实体", notes = "权限标记 people:query")
     @RequiresPermissions(value = {"people:query"})
@@ -70,11 +70,11 @@ public class PeopleController {
         return service.findOne(model);
     }
 
-    @ApiOperation(value = "根据账户id获取实体,主要用户个人资料", notes = "无权限标记")
-    @RequestMapping(value = "/people/accid/{uuid}", method = RequestMethod.GET)
-    public ResponseResult<PeopleModel> findOne2(@PathVariable("uuid") String uuid) {
+    @ApiOperation(value = "根据账户获取实体,主要用户个人资料", notes = "无权限标记")
+    @RequestMapping(value = "/people/accid/{account}", method = RequestMethod.GET)
+    public ResponseResult<PeopleModel> findOne2(@PathVariable("account") String account) {
         PeopleModel model = new PeopleModel();
-        model.setAccId(uuid);
+        model.setAccId(account);
         return service.findOne(model);
     }
 
