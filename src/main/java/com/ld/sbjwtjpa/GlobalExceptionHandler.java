@@ -62,12 +62,16 @@ public class GlobalExceptionHandler {
                 break;
             case "2":
                 errorStr = "数据过于陈旧，请刷新后在尝试";
+                break;
             case "3":
                 errorStr = "需要操作的对象的主键不能为空";
+                break;
             case "4":
                 errorStr = "数据已存在";
+                break;
             case "5":
                 errorStr = "未找到需要操作的数据";
+                break;
             default:
                 errorStr = exception.getMessage();
         }
