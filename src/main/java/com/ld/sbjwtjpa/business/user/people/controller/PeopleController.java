@@ -25,7 +25,7 @@ public class PeopleController {
     @Autowired
     private PeopleService service;
 
-    @ApiOperation(value = "新增实体", notes = "权限标记 people:save")
+    @ApiOperation(value = "新增实体,如果已存在则修改", notes = "权限标记 people:save")
     @RequiresPermissions(value = {"people:save"})
     @RequestMapping(value = "/people", method = RequestMethod.POST)
     public ResponseResult<PeopleModel> save(@Valid @RequestBody PeopleModel model,

@@ -54,9 +54,18 @@ public class PeopleServiceImpl implements PeopleService {
         if (model.getAccId() == null || model.getAccId().isEmpty())
             throw new MyExceptions("当前员工所关联的账户主键不能为空");
         List<PeopleModel> list = jpa.findByAccId(model.getAccId());
-        if (list.size() > 0)
-            throw new MyExceptions("4");
-        jpa.save(model);
+        if (list.size() > 0) {
+//            throw new MyExceptions("4");
+            Optional<PeopleModel> opt = jpa.findById(list.get(0).getUuid());
+            if (opt.orElse(null) != null) {
+                PeopleModel one = opt.get();
+                if (model.getName() != null && !model.getName().isEmpty())
+                    one.setName(model.getName());
+                jpa.flush();
+            }
+//            throw new MyExceptions("信息已不存在");
+        } else
+            jpa.save(model);
         return new ResponseResult<>(true, "成功");
     }
 
