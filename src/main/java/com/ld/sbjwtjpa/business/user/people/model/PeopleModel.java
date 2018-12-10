@@ -141,7 +141,7 @@ public class PeopleModel implements Serializable {
     @ApiModelProperty(value = "专业职称", name = "professionalTitle", dataType = "String", allowableValues = "专业职称")
     @Size(max = 200, message = "专业职称最大长度为200位")
     @Column(name = "professional_title")
-    private int professionalTitle;
+    private String professionalTitle;
 
     @ApiModelProperty(value = "婚姻状况", name = "marital", dataType = "String", allowableValues = "婚姻状况")
     @Size(max = 1, message = "婚姻状况最大长度为1位")
