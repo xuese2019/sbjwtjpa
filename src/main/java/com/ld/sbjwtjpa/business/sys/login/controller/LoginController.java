@@ -43,7 +43,7 @@ public class LoginController {
 
     @ApiOperation(value = "登陆", notes = "后台带有数据验证")
 //    @DuplicateSubmitToken
-    @RequestLimit(count = 1,time = 2000)
+    @RequestLimit(count = 10,time = 5000)
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseResult<String> login(@Valid @RequestBody AccountModel model,
                                         BindingResult result) {

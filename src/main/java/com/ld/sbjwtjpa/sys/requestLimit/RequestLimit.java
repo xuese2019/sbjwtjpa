@@ -13,13 +13,13 @@ import java.lang.annotation.*;
 public @interface RequestLimit {
     /**
      *
-     * 允许访问的次数，默认值MAX_VALUE
+     * 允许访问的次数，默认值10次
      */
-    int count() default Integer.MAX_VALUE;
+    int count() default 10;
 
     /**
      *
-     * 时间段，单位为毫秒，默认值一分钟
+     * 时间段，单位为毫秒，默认值5000ms
      */
-    long time() default 60000;
+    long time() default 5000;
 }
