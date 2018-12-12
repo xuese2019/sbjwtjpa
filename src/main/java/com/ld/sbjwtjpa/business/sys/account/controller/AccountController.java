@@ -2,6 +2,7 @@ package com.ld.sbjwtjpa.business.sys.account.controller;
 
 import com.ld.sbjwtjpa.business.sys.account.model.AccountModel;
 import com.ld.sbjwtjpa.business.sys.account.service.AccountService;
+import com.ld.sbjwtjpa.sys.preventDuplication.DuplicateSubmitToken;
 import com.ld.sbjwtjpa.sys.shiro.JWTUtils;
 import com.ld.sbjwtjpa.utils.ResponseResult;
 import io.swagger.annotations.Api;
@@ -31,6 +32,7 @@ public class AccountController {
     private AccountService service;
 
     @ApiOperation(value = "新增实体", notes = "后台带有数据验证")
+    @DuplicateSubmitToken
     @RequiresRoles(value = {"admin"})
     @RequestMapping(value = "/account", method = RequestMethod.POST)
     public ResponseResult<AccountModel> save(@Valid @RequestBody AccountModel model,
@@ -63,6 +65,7 @@ public class AccountController {
 //    }
 
     @ApiOperation(value = "修改当前登陆账号的密码", notes = "修改当前登陆账号的密码")
+    @DuplicateSubmitToken
     @RequestMapping(value = "/account/current", method = RequestMethod.PUT)
     public ResponseResult<AccountModel> updatePassword(HttpServletRequest request,
                                                        @RequestBody AccountModel model) {
@@ -79,6 +82,7 @@ public class AccountController {
     }
 
     @ApiOperation(value = "重置指定账号的密码,默认密码为 123456", notes = "只需要传递uuid和password。重置指定账号的密码,默认密码为 123456")
+    //@DuplicateSubmitToken
     @RequiresRoles(value = {"admin"})
     @RequestMapping(value = "/account/reset", method = RequestMethod.PUT)
     public ResponseResult<AccountModel> updateResetPassword(HttpServletRequest request,

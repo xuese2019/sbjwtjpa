@@ -1,5 +1,6 @@
 package com.ld.sbjwtjpa;
 
+import com.ld.sbjwtjpa.sys.requestLimit.RequestLimitException;
 import com.ld.sbjwtjpa.utils.MyExceptions;
 import com.ld.sbjwtjpa.utils.ResponseResult;
 import lombok.extern.slf4j.Slf4j;
@@ -76,6 +77,28 @@ public class GlobalExceptionHandler {
                 errorStr = exception.getMessage();
         }
         result.setMessage(errorStr);
+        return result;
+    }
+
+    /**
+     * 非法参数
+     *
+     * @param request
+     * @param exception
+     * @return
+     */
+    @ExceptionHandler(value = RequestLimitException.class)
+    public ResponseResult<String> requestLimitException(HttpServletRequest request,
+                                                        Exception exception) {
+        exception.printStackTrace();
+        log.debug("ERROR::::：" + exception.getLocalizedMessage() + "::::::" + new Date());
+        log.debug("ERROR::::：" + exception.getCause() + "::::::" + new Date());
+        log.debug("ERROR::::：" + Arrays.toString(exception.getSuppressed()) + "::::::" + new Date());
+        log.debug("ERROR::::：" + exception.getMessage() + "::::::" + new Date());
+        log.debug("ERROR::::：" + Arrays.toString(exception.getStackTrace()) + "::::::" + new Date());
+        ResponseResult<String> result = new ResponseResult<>();
+        result.setSuccess(false);
+        result.setMessage(exception.getMessage());
         return result;
     }
 

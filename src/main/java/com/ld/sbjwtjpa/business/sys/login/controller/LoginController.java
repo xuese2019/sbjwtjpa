@@ -4,6 +4,8 @@ import com.ld.sbjwtjpa.business.sys.account.model.AccountModel;
 import com.ld.sbjwtjpa.business.sys.account.service.AccountService;
 import com.ld.sbjwtjpa.business.sys.admin.model.AdminModel;
 import com.ld.sbjwtjpa.business.sys.admin.service.AdminService;
+import com.ld.sbjwtjpa.sys.preventDuplication.DuplicateSubmitToken;
+import com.ld.sbjwtjpa.sys.requestLimit.RequestLimit;
 import com.ld.sbjwtjpa.sys.shiro.JWTUtils;
 import com.ld.sbjwtjpa.utils.ResponseResult;
 import io.swagger.annotations.Api;
@@ -40,6 +42,8 @@ public class LoginController {
 //    DefaultKaptcha defaultKaptcha;
 
     @ApiOperation(value = "登陆", notes = "后台带有数据验证")
+//    @DuplicateSubmitToken
+    @RequestLimit(count = 1,time = 2000)
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseResult<String> login(@Valid @RequestBody AccountModel model,
                                         BindingResult result) {
