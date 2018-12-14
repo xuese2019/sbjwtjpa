@@ -1,5 +1,6 @@
 package com.ld.sbjwtjpa.business.sys.webSocket.controller;
 
+import io.swagger.annotations.Api;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.OnClose;
@@ -10,6 +11,7 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+@Api(value = "实时通讯接口", description = "实时通讯接口")
 @ServerEndpoint(value = "/websocket")
 @Component
 public class WebSocketController {
