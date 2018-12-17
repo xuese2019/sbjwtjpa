@@ -1,0 +1,4 @@
+ 删除重复
+ delete from qxgl_table where uuid in (select uuid from (select uuid from qxgl_table where qxbs in
+(select qxbs from qxgl_table group by qxbs having count(qxbs)>1) and uuid not in
+(select min(uuid) from qxgl_table group by qxbs having count(qxbs)>1)) as tmpresult)
